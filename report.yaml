@@ -1,0 +1,33 @@
+company:
+  name: Citi Global Markets
+  logo: citigroup_logo.png
+product_narrative: lorem ipsum
+  picture: team37.jpg
+  roster:
+  - name: [Eyal Engel](https://www.linkedin.com/in/eyalengel)
+    email: ee288@cornell.edu
+    picture: eyal.jpg
+    program: MBA
+  - name: Florencia Medina
+    email: fm436@cornell.edu
+    picture: florencia.jpg
+    program: MBA
+  - name: Melanie Kaplan-Cohen
+    email: mk2573@cornell.edu
+    picture: melanie.jpg
+    program: CS
+  - name: Nick Hartmann
+    email: njh89@cornell.edu
+    picture: nick.jpg
+    program: CS
+  - name: Simran Rajpal
+    email: sr2258@cornell.edu
+    picture: simran.jpg
+    program: CS
+  - name: Plamena Georgieva
+    email: pvg25@cornell.edu
+    picture: plumena.jpg
+    program: MBA
+assets:
+- title: Sprint 1
+  url: 
