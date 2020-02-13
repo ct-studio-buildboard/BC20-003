@@ -26,7 +26,7 @@ product_narrative: lorem ipsum
     program: CS
   - name: Plamena Georgieva
     email: pvg25@cornell.edu
-    picture: plumena.jpg
+    picture: plamena.jpg
     program: MBA
 assets:
 - title: Sprint 1
