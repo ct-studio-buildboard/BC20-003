@@ -1,7 +1,7 @@
 company:
   name: Citi Global Markets
   logo: citigroup_logo.png
-product_narrative: Roadshow™ is a data-driven dashboard assuring end-to-end visibility across the corporate access event-planning process. It provides insights and recommendations that drive a better understanding of client demand, reduce cancellation rates, and drive higher profitability.
+product_narrative: Roadshow™ is a data-driven dashboard assuring end-to-end visibility across the corporate access event-planning process. It leverages ML to provide insights, recommendations and predictions that drive a better understanding of client demand, reduce cancellation rates and drive profitability.
   picture: right_direction.jpeg
   roster:
   - name: [Eyal Engel](https://www.linkedin.com/in/eyalengel)
