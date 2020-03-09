@@ -1,1 +1,5 @@
-Nothing yet
+Incorrect yaml format for report.yaml: mapping values are not allowed here
+  in "<byte string>", line 5, column 10:
+      picture: right_direction_600_400.jpg
+             ^.
+Unable to fetch assets for BC20-003.
