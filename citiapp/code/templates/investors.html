@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block innercontent %}
+
+
+<div style="height:100%; background-color:white">
+
+	{% if acct %}
+		<center>
+			<div>
+				<h2>Account Number: {{ acct | safe}}</h2>
+			</div>
+		</center>
+	{% endif %} 
+
+	<div style="width:40%; margin:auto">
+		<label>Year</label>
+		<select id="widget_year" class="form-control widget" style="max-width:100px">
+			<option selected>All</option>
+			<option>2019</option>
+			<option>2018</option>
+			<option>2017</option>
+		</select>
+
+	</div>
+	
+
+	<div style="padding:30px">
+
+		{% for table in tables %}
+			{{ table|safe }}
+		 {% endfor %}
+
+	</div>
+
+</div>
+
+
+<script>
+
+
+$(document).ready(function(){
+
+	console.log('hello world');
+
+	// $('#investor_table').DataTable({
+	// 	// "scrollY":        "300px",
+ //            // "scrollX": true,
+ //            // "scrollCollapse": true,
+ //            // "paging":         true,
+ //            // "info":           false,
+ //            // "searching":      false,
+ //            // "bAutoWidth": true,
+	// });
+});
+
+
+
+</script>
+
+
+
+
+
+	
+{% endblock %}
