@@ -85,7 +85,7 @@
 								</td>
 								<td class="form-check" style="padding-top:15px">
 
-									<input id="widget_video" class="form-check-input widget" type="checkbox" value="checked">
+									<input id="widget_video" class="form-check-input widget" type="checkbox">
 								</td>
 							</tr>
 
@@ -112,7 +112,7 @@
 									Min. 1:1 %
 								</td>
 								<td>
-    								<input id="widget_1:1" class="custom-range widget" type="range" min="0" max="100" value="0">
+    								<input id="widget_ooo" class="custom-range widget" type="range" min="0" max="100" value="0">
 								</td>
 								<td class="td_slider_label">
 									<span class="font-weight-bold slider_label">0</span>
@@ -189,6 +189,7 @@ function writeTable(df) {
 	}
 	$("#table_body").empty();
 	$("#table_body").append(html_string);
+	$("#corporate_count").html(df.count());
 }
 
 //filter table based on widgets
@@ -203,8 +204,39 @@ function filterTable() {
 		df = df.filter(row => row.get("year") == year);
 	}
 
+	var region = $("#widget_region").val();
+	if(region != 'All'){
+		df = df.filter(row => row.get("company_region") == region);
+	}
+
+	var type = $("#widget_type").val();
+	if(type != 'All'){
+		df = df.filter(row => row.get("company_type") == type);
+	}
+
+	if($("#widget_video").is(':checked')){
+		df = df.filter(row => row.get("vid_call_pct") > 0);
+	}
+
+	var minInters = $("#widget_interactions").val();
+	if (minInters > 0){
+		df = df.filter(row => row.get("total_interactions") >= minInters);
+	}
+
+	var mgmtPct = $("#widget_mgmt").val();
+	if (mgmtPct > 0){
+		df = df.filter(row => row.get("management_pct") >= mgmtPct);
+	}
+
+	var oooPct = $("#widget_ooo").val();
+	if (oooPct > 0){
+		df = df.filter(row => row.get("one_on_one_pct") >= oooPct);
+	}
+
+	$("#corporate_count").val(df.count());
+
 	//write the dataframe table to HTML table
-	writeTable(df)
+	writeTable(df);
 }
 
 $(document).ready(function(){
