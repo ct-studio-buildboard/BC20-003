@@ -3,25 +3,164 @@
 {% block innercontent %}
 
 
-<div style="height:100%; background-color:white">
+<div class="screen_div">
 
-	<div style="width:40%; margin:auto">
-		<label>Year</label>
-		<select id="widget_year" class="form-control widget" style="max-width:100px">
-			<option selected>All</option>
-			<option>2019</option>
-			<option>2018</option>
-			<option>2017</option>
-		</select>
+ 	<div class="heading_div">
+ 		<h1>CORPORATES</h1>
 
-	</div>
-	
+ 	</div>
 
-	<div style="padding:30px">
+ 	<div class="row">
+	 	<div class="col-sm-3">
+	 		<div class="data_block_1">
+	 			<h5>Corporates</h5>
+	 			<center>
+	 				{{ data|length }}
+	 			</center>
 
-		{% for table in tables %}
-			{{ table|safe }}
-		 {% endfor %}
+	 		</div>
+
+	 		<div class="data_block_1">
+	 			<h5>Top Corporates by Interactions</h5>
+	 			<table>
+	 				{% for c in top_corporates %}
+	 					<tr>
+	 						<td>{{ c[0] }}</td>
+	 						<td style="padding-left:30px">{{ c[1] }}</td>
+	 					</tr>	
+	 				{% endfor %}
+	 			</table>
+
+	 		</div>
+
+	 	</div>
+
+	 	<div class="col-sm-9">
+
+			<div class="widget_panel">
+				<div class="row">
+					<div class="col-sm-6" style="padding-right:40px">
+						<table>
+							<tr>
+								<td>
+									<label>Year</label>
+								</td>
+								<td>
+									<select id="widget_year" class="form-control widget">
+										<option selected>All</option>
+										{% for year in select_values['years'] %}
+											<option>{{ year }}</option>
+										{% endfor %}
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Region</label>
+								</td>
+								<td>
+									<select id="widget_region" class="form-control widget">
+										<option selected>All</option>
+										{% for year in select_values['regions'] %}
+											<option>{{ year }}</option>
+										{% endfor %}
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>Corporate Type</label>
+								</td>
+								<td>
+									<select id="widget_type" class="form-control widget">
+										<option selected>All</option>
+										<option>Public</option>
+										<option>Private</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td style="padding-top:15px">
+									<label>Video Conference</label>
+								</td>
+								<td class="form-check" style="padding-top:15px">
+
+									<input id="widget_video" class="form-check-input widget" type="checkbox" value="checked">
+								</td>
+							</tr>
+
+
+						</table>
+								
+					</div>
+					<div class="col-sm-6" style="padding-left:40px">
+						<table class="slider_table">
+							<tr>
+								<td>
+									Min. Interactions
+								</td>
+								<td>
+    								<input id="widget_interactions" class="custom-range widget" type="range" min="0" max="200" value="0">
+								</td>
+								<td class="td_slider_label">
+									<span class="font-weight-bold slider_label">0</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									Min. 1:1 %
+								</td>
+								<td>
+    								<input id="widget_1:1" class="custom-range widget" type="range" min="0" max="100" value="0">
+								</td>
+								<td class="td_slider_label">
+									<span class="font-weight-bold slider_label">0</span>
+								</td>
+							</tr>
+
+							<tr>
+								<td>
+									Min. Mgmt. %
+								</td>
+								<td>
+									<input id="widget_mgmt" class="custom-range widget" type="range" min="0" max="100" value="0">
+								</td>
+								<td class="td_slider_label">
+									<span class="font-weight-bold slider_label">0</span>
+								</td>
+							</tr>
+
+						</table>
+					</div>
+				</div>
+			</div>
+			
+
+			<div class="output_div" style="padding:30px">
+				<center>
+					<h2>Total Corporates: <span id="corporate_count">{{ data|length }}</span></h2>
+				</center>
+
+				<div class="output_table_div">
+					<table id="corporate_table" class="table table-striped">
+						<thead>
+							<tr>
+								{% for c in html_colnames %}
+									<th span="col">{{ c|safe }}</th>
+								{% endfor %}
+							</tr>
+							<tbody id="table_body">
+							</tbody>
+						</thead>
+
+					</table>
+				</div>
+
+
+			</div>
+
+		</div>
 
 	</div>
 
@@ -30,10 +169,62 @@
 
 <script>
 
+// read in passed data
+var DataFrame = dfjs.DataFrame;
+var data = {{ data|safe }};
+var colnames = {{ colnames|safe }};
+
+//write data in dataframe to the HTML table
+function writeTable(df) {
+	var table_values = df.toArray();
+
+	var html_string = "";
+	for (var i=0; i<table_values.length; i++){
+		var row = table_values[i];
+		html_string += "<tr>";
+		for (var j=0; j<row.length; j++){
+			html_string += '<td>' + row[j] + '</td>'
+		}
+		html_string += "</tr>";
+	}
+	$("#table_body").empty();
+	$("#table_body").append(html_string);
+}
+
+//filter table based on widgets
+function filterTable() {
+
+	//create a new dataframe with all original data
+	var df = new DataFrame(data, colnames);
+
+	//filter based on year
+	var year = $("#widget_year").val();
+	if(year != 'All'){
+		df = df.filter(row => row.get("year") == year);
+	}
+
+	//write the dataframe table to HTML table
+	writeTable(df)
+}
 
 $(document).ready(function(){
 
-	console.log('hello world');
+	console.log(colnames);
+	
+	var df = new DataFrame(data, colnames);
+	writeTable(df);
+	
+	
+
+	$(".widget").change(function() {
+		filterTable();
+	});
+
+	$(".custom-range").change(function() {
+		var current_value = this.value;
+		$(this).closest('tr').find('.slider_label').html(current_value);
+	});
+
 
 	// $('#investor_table').DataTable({
 	// 	// "scrollY":        "300px",
@@ -49,7 +240,6 @@ $(document).ready(function(){
 
 
 </script>
-
 
 
 

@@ -3,45 +3,111 @@
 {% block innercontent %}
 
 
-<div style="height:100%; background-color:white">
+<div class="screen_div">
 
-	{% if acct %}
+<!-- 	{% if acct %}
 		<center>
 			<div>
 				<h2>Account Number: {{ acct | safe}}</h2>
 			</div>
 		</center>
 	{% endif %} 
+ -->
 
-	<div style="width:40%; margin:auto">
-		<label>Year</label>
-		<select id="widget_year" class="form-control widget" style="max-width:100px">
-			<option selected>All</option>
-			<option>2019</option>
-			<option>2018</option>
-			<option>2017</option>
-		</select>
+ 	<div class="row">
+	 	<div class="col-sm-3">
+	 		<div class="data_block_1">
+	 			<h5>Investors</h5>
+	 			<center>
+	 				2000
+	 			</center>
 
-	</div>
-	
+	 		</div>
 
-	<div style="padding:30px">
+	 	</div>
 
-		{% for table in tables %}
-			{{ table|safe }}
-		 {% endfor %}
+	 	<div class="col-sm-9">
+
+			<div style="width:40%; margin:auto">
+				<label>Year</label>
+				<select id="widget_year" class="form-control widget" style="max-width:100px">
+					<option selected>All</option>
+					<option>2019</option>
+					<option>2018</option>
+					<option>2017</option>
+				</select>
+
+			</div>
+			
+
+			<div style="padding:30px">
+
+				<table id="investor_table" class="table table-striped">
+					<thead>
+						<tr>
+							{% for c in colnames %}
+								<th span="col">{{ c|safe }}</th>
+							{% endfor %}
+						</tr>
+						<tbody id="table_body">
+						</tbody>
+					</thead>
+
+				</table>
+
+				<!-- {% for table in tables %}
+					{{ table|safe }}
+				 {% endfor %} -->
+
+			</div>
+
+		</div>
 
 	</div>
 
 </div>
 
-
 <script>
 
+var DataFrame = dfjs.DataFrame;
+var data = {{ data|safe }};
+console.log(data);
+var colnames = {{ colnames|safe }};
+
+function writeTable(df) {
+	var table_values = df.toArray();
+
+	var html_string = "";
+	for (var i=0; i<table_values.length; i++){
+		var row = table_values[i];
+		html_string += "<tr>";
+		for (var j=0; j<row.length; j++){
+			html_string += '<td>' + row[j] + '</td>'
+		}
+		html_string += "</tr>";
+	}
+	$("#table_body").empty();
+	$("#table_body").append(html_string);
+}
 
 $(document).ready(function(){
 
-	console.log('hello world');
+	var df = new DataFrame(data, colnames);
+	writeTable(df);
+	
+	
+
+	$("#widget_year").change(function() {
+		console.log('here');
+		var df = new DataFrame(data, colnames);
+		var year = this.value;
+		if(year != 'All'){
+			console.log('here!')
+			df = df.filter(row => row.get("year") == year);
+		}
+		writeTable(df);
+	});
+
 
 	// $('#investor_table').DataTable({
 	// 	// "scrollY":        "300px",

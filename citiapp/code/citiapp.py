@@ -3,6 +3,7 @@ import sqlite3
 import json
 from collections import defaultdict
 import pandas as pd
+import numpy as np
 app = Flask(__name__)
 app.secret_key = '1jfEi4fjJ@3iFso9'
 
@@ -30,15 +31,9 @@ def investors(acct):
                         'total_interactions', 'unique_corporates', 'unique_industries']
         investors = investors[cols_to_show]
 
-        investors_html = investors.to_html(classes = ['table', 'table-striped', 'datatable'],
-                                            border=0,
-                                            table_id = 'investor_table')
-
-
-
         return render_template('investors.html', 
-                                tables=[investors_html], 
-                                titles=investors.columns.values,
+                                data = investors.values.tolist(),
+                                colnames = cols_to_show,
                                 acct=None)
 
     else:
@@ -67,22 +62,39 @@ def investors(acct):
 def corporates():
 
     conn = sqlite3.connect("citi.db")
-    query = "SELECT * from roadshow_company limit 20"
+    query = """SELECT * from roadshow_company 
+                order by total_interactions desc limit 100"""
     corporates = pd.read_sql_query(query, conn)
     conn.close()
 
-    cols_to_show = ['company_name', 'company_region', 'year', 'total_interactions',
-                    'unique_investors']
+    top_corporates = corporates.groupby('company_name')['total_interactions'].sum().reset_index()\
+                                .sort_values('total_interactions', ascending=False)\
+                                .reset_index(drop=True)
+    top_corporates['total_interactions'] = top_corporates['total_interactions'].astype(int)
+    top_corporates = top_corporates.head(10).values.tolist()
+
+    corporates['company_type'] = np.where(corporates['private_flag'] == 0, 'Public', 'Private')
+    cols_to_show = ['company_name', 'company_region', 'company_type', 'year', 'total_interactions',
+                    'unique_investors', 'one_on_one_pct', 'management_pct', 'vid_call_pct']
     corporates = corporates[cols_to_show]
 
-    corporates_html = corporates.to_html(classes = ['table', 'table-striped', 'datatable'],
-                                        border=0,
-                                        table_id = 'corporate_table')
+    pct_cols = ('one_on_one_pct', 'management_pct', 'vid_call_pct')
+    for colname in pct_cols:
+        corporates[colname] = (corporates[colname]*100).round(1)
 
+    html_colnames = ['Corporate', 'Region', 'Type', 'Year', 'Interactions',
+                        'Unique Investors', '1:1 %', 'Mgmt %', 'Video Call %']
 
+    select_values = {}
+    select_values['years'] = sorted(list(set(corporates['year'])))
+    select_values['regions'] = sorted(list(set(corporates['company_region'])))
 
     return render_template('corporates.html', 
-                            tables=[corporates_html])
+                            data = corporates.values.tolist(),
+                            colnames = cols_to_show,
+                            html_colnames = html_colnames,
+                            top_corporates = top_corporates,
+                            select_values = select_values)
 
 
 

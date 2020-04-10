@@ -1,3 +1,14 @@
+body{
+	font-family: Noto Sans, sans-serif;
+}
+
+h1 {
+	color:#0B4479;
+}
+
+select {
+	min-width:120px;
+}
 
 #base_div{
 	font-family: Ruda;
@@ -6,6 +17,42 @@
 	font-size: 64px;
 	line-height: 78px;
 	color:white;
+}
+
+.custom-range{
+	width:200px;
+}
+
+.data_block_1 {
+	padding: 20px 25px 25px 20px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	margin-bottom:20px;
+	color: #0B4479;
+	font-size:30px;
+}
+
+.data_block_1 h5 {
+	font-size: 24px;
+	color:  #6B7D8D;
+}
+
+.data_block_1 table {
+	font-size: 20px;
+	color:  #0B4479;
+	width: 100%;
+}
+
+.data_block_1 td {
+	padding-top:30px;
+}
+
+.datatable {
+	max-width:100px;
+}
+
+.heading_div {
+	padding-bottom:20px;
 }
 
 .index_button {
@@ -17,6 +64,45 @@
 	font-size:36px;
 }
 
-.datatable {
-	max-width:100px;
+.output_div {
+}
+
+.output_table_div {
+	max-height:600px;
+	overflow:scroll;
+}
+
+.screen_div {
+	padding-left:30px;
+	padding-right:30px;
+	padding-top:40px;
+	padding-bottom:40px;
+}
+
+.td_slider_label {
+	padding-left:95px;
+}
+
+.widget_panel {
+	width:80%;
+	margin:auto;
+}
+
+.widget_panel table {
+	width:100%;
+}
+
+.widget_panel td {
+	padding-bottom:5px;
+	vertical-align:bottom;
+	font-size:16px;
+}
+
+.widget_panel .slider_table {
+	table-layout:fixed;
+}
+
+.widget_panel .slider_table td {
+	padding-top:5px;
+	padding-bottom:15px;
 }
