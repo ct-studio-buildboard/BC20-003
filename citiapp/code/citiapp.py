@@ -23,78 +23,128 @@ def investors(acct):
 
     if acct == None:
         conn = sqlite3.connect("citi.db")
-        query = "SELECT * from roadshow_investor limit 20"
+        query = """SELECT * from roadshow_investor 
+                    order by total_interactions desc limit 1000"""
         investors = pd.read_sql_query(query, conn)
         conn.close()
 
-        cols_to_show = ['acct', 'investor_region', 'year', 'global_access', 
-                        'total_interactions', 'unique_corporates', 'unique_industries']
+        top_investors = investors.groupby('acct')['total_interactions'].sum().reset_index()\
+                                    .sort_values('total_interactions', ascending=False)\
+                                    .reset_index(drop=True)
+        top_investors['total_interactions'] = top_investors['total_interactions'].astype(int)
+        top_investors = top_investors.head(10).values.tolist()
+
+        cols_to_show = ['acct', 'investor_region', 'year', 'global_access', 'total_interactions',
+                        'unique_corporates', 'unique_industries', 'one_on_one_pct',
+                        'management_pct', 'vid_call_pct']
         investors = investors[cols_to_show]
 
-        return render_template('investors.html', 
+        pct_cols = ('one_on_one_pct', 'management_pct', 'vid_call_pct')
+        for colname in pct_cols:
+            investors[colname] = (investors[colname]*100).round(1)
+
+        html_colnames = ['Acct', 'Region', 'Year', 'Global Access Tier', 'Total Interactions',
+                            'Unique Corporates', 'Unique Industries',
+                             '1:1 %', 'Mgmt %', 'Video Call %']
+
+        select_values = {}
+        select_values['years'] = sorted(list(set(investors['year'])), reverse=True)
+        select_values['regions'] = sorted(list(set(investors['investor_region'])))
+        select_values['tiers'] = sorted(list(set(investors['global_access'])))
+
+        return render_template('investors_revised.html', 
                                 data = investors.values.tolist(),
                                 colnames = cols_to_show,
-                                acct=None)
+                                html_colnames = html_colnames,
+                                top_investors = top_investors,
+                                select_values = select_values)
 
     else:
         conn = sqlite3.connect("citi.db")
-        query = "SELECT * from interactions_raw where acct == {} limit 20".format(acct)
-        records = pd.read_sql_query(query, conn)
+        query = """SELECT * from interactions_roadshow 
+                    where acct == {}
+                    order by 'date' """.format(acct)
+        df = pd.read_sql_query(query, conn)
         conn.close()
 
-        cols_to_show = ['date', 'company_name', 'company_industry', 'meeting_type',
-                        'company_country', 'market_cap']
-        records = records[cols_to_show]
+        year_set = sorted(list(set(df['year'])), reverse = True)
 
-        records_html = records.to_html(classes = ['table', 'table-striped', 'datatable'],
-                                            border=0,
-                                            table_id = 'investor_table')
+        investor_info = {}
+        investor_info['acct'] = acct
 
-        return render_template('investors.html', 
-                                acct=acct,
-                                tables=[records_html], 
-                                titles=records.columns.values)
 
+        return render_template('view_investor.html', 
+                                year_set = year_set,
+                                investor_info = investor_info,
+                                data = json.dumps(df.values.tolist()),
+                                colnames = list(df.columns))
 
 
 
-@app.route('/corporates/')
-def corporates():
+@app.route('/corporates/', defaults={'corporate_id': None})
+@app.route('/corporates/<corporate_id>')
+def corporates(corporate_id):
 
-    conn = sqlite3.connect("citi.db")
-    query = """SELECT * from roadshow_company 
-                order by total_interactions desc limit 100"""
-    corporates = pd.read_sql_query(query, conn)
-    conn.close()
+    if corporate_id == None:
 
-    top_corporates = corporates.groupby('company_name')['total_interactions'].sum().reset_index()\
-                                .sort_values('total_interactions', ascending=False)\
-                                .reset_index(drop=True)
-    top_corporates['total_interactions'] = top_corporates['total_interactions'].astype(int)
-    top_corporates = top_corporates.head(10).values.tolist()
+        conn = sqlite3.connect("citi.db")
+        query = """SELECT * from roadshow_company 
+                    order by total_interactions desc limit 1000"""
+        corporates = pd.read_sql_query(query, conn)
+        conn.close()
 
-    corporates['company_type'] = np.where(corporates['private_flag'] == 0, 'Public', 'Private')
-    cols_to_show = ['company_name', 'company_region', 'company_type', 'year', 'total_interactions',
-                    'unique_investors', 'one_on_one_pct', 'management_pct', 'vid_call_pct']
-    corporates = corporates[cols_to_show]
+        top_corporates = corporates.groupby('company_name')['total_interactions'].sum().reset_index()\
+                                    .sort_values('total_interactions', ascending=False)\
+                                    .reset_index(drop=True)
+        top_corporates['total_interactions'] = top_corporates['total_interactions'].astype(int)
+        top_corporates = top_corporates.head(10).values.tolist()
 
-    pct_cols = ('one_on_one_pct', 'management_pct', 'vid_call_pct')
-    for colname in pct_cols:
-        corporates[colname] = (corporates[colname]*100).round(1)
+        corporates['company_type'] = np.where(corporates['private_flag'] == 0, 'Public', 'Private')
+        cols_to_show = ['company_name', 'company_region', 'company_type', 'year', 'total_interactions',
+                        'unique_investors', 'one_on_one_pct', 'management_pct', 'vid_call_pct']
+        corporates = corporates[cols_to_show]
 
-    html_colnames = ['Corporate', 'Region', 'Type', 'Year', 'Interactions',
-                        'Unique Investors', '1:1 %', 'Mgmt %', 'Video Call %']
+        pct_cols = ('one_on_one_pct', 'management_pct', 'vid_call_pct')
+        for colname in pct_cols:
+            corporates[colname] = (corporates[colname]*100).round(1)
 
-    select_values = {}
-    select_values['years'] = sorted(list(set(corporates['year'])))
-    select_values['regions'] = sorted(list(set(corporates['company_region'])))
+        html_colnames = ['Corporate', 'Region', 'Type', 'Year', 'Interactions',
+                            'Unique Investors', '1:1 %', 'Mgmt %', 'Video Call %']
 
-    return render_template('corporates.html', 
-                            data = corporates.values.tolist(),
-                            colnames = cols_to_show,
-                            html_colnames = html_colnames,
-                            top_corporates = top_corporates,
-                            select_values = select_values)
+        select_values = {}
+        select_values['years'] = sorted(list(set(corporates['year'])), reverse=True)
+        select_values['regions'] = sorted(list(set(corporates['company_region'])))
+
+        return render_template('corporates.html', 
+                                data = corporates.values.tolist(),
+                                colnames = cols_to_show,
+                                html_colnames = html_colnames,
+                                top_corporates = top_corporates,
+                                select_values = select_values)
+
+    else:
+
+        conn = sqlite3.connect("citi.db")
+        query = """SELECT * FROM interactions_roadshow 
+                    WHERE corporate_id = {}
+                    ORDER BY 'date' """.format(corporate_id)
+        df = pd.read_sql_query(query, conn)
+        conn.close()
+
+        year_set = sorted(list(set(df['year'])), reverse = True)
+
+        corporate_info = {}
+        corporate_info['region'] = df['company_region'][0]
+        corporate_info['country'] = df['company_country'][0]
+        corporate_info['company_name'] = df['company_name'][0]
+        corporate_info['corporate_id'] = corporate_id
+
+
+        return render_template('view_corporate.html',
+                                year_set = year_set,
+                                corporate_info = corporate_info,
+                                data = json.dumps(df.values.tolist()),
+                                colnames = list(df.columns))
 
 
 

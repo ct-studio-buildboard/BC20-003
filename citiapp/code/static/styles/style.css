@@ -1,5 +1,6 @@
 body{
 	font-family: Noto Sans, sans-serif;
+	/*background:#e5e5e5;*/
 }
 
 h1 {
@@ -47,8 +48,63 @@ select {
 	padding-top:30px;
 }
 
+.data_block_2 {
+	padding: 20px 25px 25px 20px;
+	background: #0B4479;
+	border-radius: 5px;
+	margin-bottom:20px;
+	color: white;
+	font-size:30px;
+	text-align:center;
+	font-weight:bold;
+}
+
+.data_block_heading {
+	font-size: 24px;
+	padding: 5px;
+	font-weight:normal;
+}
+
+.data_block_row {
+
+}
+
 .datatable {
 	max-width:100px;
+}
+
+.detail_button {
+	width:100%;
+	padding-top:15px;
+	padding-bottom:15px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	color: #0B4479;
+	font-size:24px;
+	text-align:center;
+	margin-top:40px;
+}
+
+.div_heading_1 {
+	width:100%;
+	padding-top:5px;
+	padding-bottom:5px;
+	background: #0B4479;
+	border-radius: 5px;
+	color: white;
+	font-size:30px;
+	text-align:center;
+}
+
+.div_heading_2 {
+	width:100%;
+	padding-top:5px;
+	padding-bottom:5px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	color: #0B4479;
+	font-size:30px;
+	text-align:center;
 }
 
 .heading_div {
@@ -72,6 +128,10 @@ select {
 	overflow:scroll;
 }
 
+.row_heading {
+	padding-bottom: 15px;
+}
+
 .screen_div {
 	padding-left:30px;
 	padding-right:30px;
@@ -81,6 +141,11 @@ select {
 
 .td_slider_label {
 	padding-left:95px;
+}
+
+.text_heading {
+	color: #0B4479;
+	font-size: 36px;
 }
 
 .widget_panel {
@@ -106,3 +171,25 @@ select {
 	padding-top:5px;
 	padding-bottom:15px;
 }
+
+.year_button {
+	width:150px;
+	border-radius:5px;
+	border-color: #B70000;
+	color:#B70000;
+	font-weight:bold;
+	font-size:18px;
+	margin:10px;
+}
+
+.year_selected {
+	background-color:#B70000;
+	color:white;
+}
+
+.year_button_row {
+	padding-top:25px;
+	padding-left:20px;
+	padding-bottom:30px;
+}
+
