@@ -182,7 +182,9 @@ function writeTable(df) {
 	for (var i=0; i<table_values.length; i++){
 		var row = table_values[i];
 		html_string += "<tr>";
-		for (var j=0; j<row.length; j++){
+		// first column = name with link
+		html_string += '<td><a href=\"/corporates/'+row[0]+'\">'+row[1]+'</a></td>';
+		for (var j=2; j<row.length; j++){
 			html_string += '<td>' + row[j] + '</td>'
 		}
 		html_string += "</tr>";
@@ -232,8 +234,6 @@ function filterTable() {
 	if (oooPct > 0){
 		df = df.filter(row => row.get("one_on_one_pct") >= oooPct);
 	}
-
-	$("#corporate_count").val(df.count());
 
 	//write the dataframe table to HTML table
 	writeTable(df);

@@ -53,7 +53,7 @@ def investors(acct):
         select_values['regions'] = sorted(list(set(investors['investor_region'])))
         select_values['tiers'] = sorted(list(set(investors['global_access'])))
 
-        return render_template('investors_revised.html',
+        return render_template('investors.html',
                                 data = investors.values.tolist(),
                                 colnames = cols_to_show,
                                 html_colnames = html_colnames,
@@ -130,7 +130,7 @@ def corporates(corporate_id):
         top_corporates = top_corporates.head(10).values.tolist()
 
         corporates['company_type'] = np.where(corporates['private_flag'] == 0, 'Public', 'Private')
-        cols_to_show = ['company_name', 'company_region', 'company_type', 'year', 'total_interactions',
+        cols_to_show = ['corporate_id', 'company_name', 'company_region', 'company_type', 'year', 'total_interactions',
                         'unique_investors', 'one_on_one_pct', 'management_pct', 'vid_call_pct']
         corporates = corporates[cols_to_show]
 
