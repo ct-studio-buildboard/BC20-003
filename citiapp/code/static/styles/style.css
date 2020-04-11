@@ -25,6 +25,7 @@ select {
 }
 
 .data_block_1 {
+	width: 100%;
 	padding: 20px 25px 25px 20px;
 	background: #C7D2DD;
 	border-radius: 5px;
@@ -49,11 +50,26 @@ select {
 }
 
 .data_block_2 {
+	width:100%;
 	padding: 20px 25px 25px 20px;
 	background: #0B4479;
 	border-radius: 5px;
 	margin-bottom:20px;
 	color: white;
+	font-size:30px;
+	text-align:center;
+	font-weight:bold;
+}
+
+.data_block_3 {
+	width:100%;
+	padding: 20px 25px 25px 20px;
+	background: #FFFFFF;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: #0B4479;
+	margin-bottom:20px;
+	color: #0B4479;
 	font-size:30px;
 	text-align:center;
 	font-weight:bold;
@@ -83,6 +99,27 @@ select {
 	font-size:24px;
 	text-align:center;
 	margin-top:40px;
+}
+
+.detail_button_2 {
+	width:100%;
+	padding-top:15px;
+	padding-bottom:15px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	color: #0B4479;
+	font-size:24px;
+	text-align:center;
+}
+.detail_button_3 {
+	width:100%;
+	padding-top:8px;
+	padding-bottom:8PX;
+	background: #6B7D8D;
+	border-radius: 5px;
+	color: #FFFFFF;
+	font-size:24px;
+	text-align:center;
 }
 
 .div_heading_1 {
@@ -181,6 +218,24 @@ select {
 	font-size:18px;
 	margin:10px;
 }
+.report_button {
+	width:250px;
+	border-radius:5px;
+	border-color: #6B7D8D;
+	color:#6B7D8D;
+	font-weight:bold;
+	font-size:18px;
+	margin:10px;
+}
+.portfolio_button {
+	width:250px;
+	border-radius:5px;
+	border-color: #0B4479;
+	color:#0B4479;
+	font-weight:bold;
+	font-size:18px;
+	margin:10px;
+}
 
 .year_selected {
 	background-color:#B70000;
@@ -192,4 +247,3 @@ select {
 	padding-left:20px;
 	padding-bottom:30px;
 }
-
