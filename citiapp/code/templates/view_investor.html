@@ -13,13 +13,16 @@
   				Investor
   			</div>
   		</div>
-  		<div class="col-sm-7">
+  		<div class="col-sm-6">
   			<div class="text_heading">
   				Investor Name Obfuscated
   			</div>
   		</div>
       <div class="col-sm-3">
   			<button class="detail_button_2">Similar Investors</button>
+  		</div>
+      <div class="col-sm-1">
+  			<button class="detail_button_3">Back</button>
   		</div>
   	</div>
     <div class="row row_heading">
@@ -28,7 +31,7 @@
   				Account
   			</div>
   		</div>
-  		<div class="col-sm-7">
+  		<div class="col-sm-6">
   			<div class="text_heading">
   				{{ investor_info['acct'] }}
   			</div>
@@ -106,7 +109,7 @@
       <div class="row" class="data_block_row">
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Public Coorporates</div>
+  					<div class="data_block_heading">Public Corporates</div>
   					<span id="db_public"></span>
   				</div>
   			</div>
@@ -206,7 +209,7 @@ function writeDataBlocks(df) {
 	$("#db_video").text(String(Math.round(100 * webcast_count / df.count())) + '%')
 
   //US Based %
-  var US_count = df.filter(row => row.get('investor_region') == 'US').count()
+  var US_count = df.filter(row => row.get('company_region') == 'US').count()
   $("#db_US").text(String(Math.round(100 * US_count / df.count())) + '%')
 
 }
