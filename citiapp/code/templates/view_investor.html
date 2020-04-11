@@ -5,31 +5,39 @@
 
 <div class="screen_div">
 
-	<div class="row row_heading">
-		<div class="col-sm-2">
-			<div class="div_heading_1">
-				Investor
-			</div>
-		</div>
-		<div class="col-sm-10">
-			<div class="text_heading">
-				Investor Name
-			</div>
-		</div>
-	</div>
 
-	<div class="row row_heading">
-		<div class="col-sm-2">
-			<div class="div_heading_2">
-				Account
-			</div>
-		</div>
-		<div class="col-sm-10">
-			<div class="text_heading">
-				{{ investor_info['acct'] }}
-			</div>
-		</div>
-	</div>
+  <div class="col-sm-12">
+    <div class="row row_heading">
+  		<div class="col-sm-2">
+  			<div class="div_heading_1">
+  				Investor
+  			</div>
+  		</div>
+  		<div class="col-sm-7">
+  			<div class="text_heading">
+  				Investor Name Obfuscated
+  			</div>
+  		</div>
+      <div class="col-sm-3">
+  			<button class="detail_button_2">Similar Investors</button>
+  		</div>
+  	</div>
+    <div class="row row_heading">
+  		<div class="col-sm-2">
+  			<div class="div_heading_2">
+  				Account
+  			</div>
+  		</div>
+  		<div class="col-sm-7">
+  			<div class="text_heading">
+  				{{ investor_info['acct'] }}
+  			</div>
+  		</div>
+      <div class="col-sm-3">
+  			<button class="detail_button_2">Match Corporates</button>
+  		</div>
+  	</div>
+  </div>
 
   <div class="row year_button_row">
 		<button class="year_button year_selected" value="All">All Time</button>
@@ -37,6 +45,8 @@
 			<button class="year_button" value="{{ y }}">{{ y }}</button>
 		{% endfor %}
 		<button class="year_button" value="Custom">Custom Range</button>
+    <button class="portfolio_button" value="Custum">By Portfolio Manager</button>
+    <button class="report_button" value="Custum">Generate Report</button>
 	</div>
 
   <div class="row">
@@ -57,91 +67,91 @@
   			<div class="col-md-3">
   				<div class="data_block_2">
   					<div class="data_block_heading">Unique Industries</div>
-  					<span id="db_market_cap"></span>
+  					<span id="db_unique_industries"></span>
   				</div>
   			</div>
         <div class="col-md-3">
   				<div class="data_block_3">
   					<div class="data_block_heading">YTD Fees</div>
-  					fees
+  					<center>Fees Obfuscated</center>
   				</div>
   			</div>
   		</div>
   		<div class="row" class="data_block_row">
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Total Interactions</div>
-  					<span id="db_total_interactions"></span>
-  				</div>
-  			</div>
-  			<div class="col-md-3">
-  				<div class="data_block_2">
-  					<div class="data_block_heading">Unique Investors</div>
-  					<span id="db_unique_investors"></span>
-  				</div>
-  			</div>
-  			<div class="col-md-3">
-  				<div class="data_block_2">
   					<div class="data_block_heading">Favorite Meeting Type</div>
   					<span id="db_meeting_type"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Management Presence</div>
+  					<span id="db_management"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Private Corporates</div>
+  					<span id="db_private"></span>
   				</div>
   			</div>
         <div class="col-md-3">
   				<div class="data_block_3">
-  					<div class="data_block_heading">Favorite Meeting Type</div>
-  					<span id="db_meeting_type"></span>
+  					<div class="data_block_heading">2019 Fees</div>
+  					<center>Fees Obfuscated</center>
   				</div>
   			</div>
   		</div>
       <div class="row" class="data_block_row">
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Platinum</div>
-  					<span id="db_platinum"></span>
+  					<div class="data_block_heading">Public Coorporates</div>
+  					<span id="db_public"></span>
   				</div>
   			</div>
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Management Presence</div>
-  					<span id="db_management"></span>
+  					<div class="data_block_heading">Average Market Cap</div>
+  					<span id="db_market_cap"></span>
   				</div>
   			</div>
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Video %</div>
-  					<span id="db_video"></span>
+  					<div class="data_block_heading">Favorite Market Bucket</div>
+  					<span id="db_market_bucket"></span>
   				</div>
   			</div>
         <div class="col-md-3">
   				<div class="data_block_3">
-  					<div class="data_block_heading">Video %</div>
-  					<span id="db_video"></span>
+  					<div class="data_block_heading">2018 Fees</div>
+  					<center>Fees Obfuscated</center>
   				</div>
   			</div>
   		</div>
   		<div class="row" class="data_block_row">
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Platinum</div>
-  					<span id="db_platinum"></span>
+  					<div class="data_block_heading">Total Cancelations</div>
+  					<center>Info Not Available</center>
   				</div>
   			</div>
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Management Presence</div>
-  					<span id="db_management"></span>
+  					<div class="data_block_heading">US Based Corporates</div>
+  					<span id="db_US"></span>
   				</div>
   			</div>
   			<div class="col-md-3">
   				<div class="data_block_2">
-  					<div class="data_block_heading">Video %</div>
+  					<div class="data_block_heading">Video Conference</div>
   					<span id="db_video"></span>
   				</div>
   			</div>
         <div class="col-md-3">
   				<div class="data_block_1">
-  					<div class="data_block_heading">Video %</div>
-  					<span id="db_video"></span>
+  					<div class="data_block_heading">MIFID Flag</div>
+            <center>Not Available</center>
   				</div>
   			</div>
   		</div>
@@ -161,14 +171,8 @@ var colnames = {{ colnames|safe }};
 
 function writeDataBlocks(df) {
 
-	//Market cap (most recent)
-	var current_values = df.select('market_cap').toArray();
-	var market_cap = current_values[current_values.length-1][0];
-	if (market_cap != null) {
-		$("#db_market_cap").text(market_cap);
-	} else{
-		$("#db_market_cap").text('NA');
-	}
+	//Average Market cap
+  $("#db_market_cap").text(Math.round(df.stat.mean('market_cap')));
 
 	//Total Interactions
 	$("#db_total_interactions").text(df.count());
@@ -176,21 +180,34 @@ function writeDataBlocks(df) {
 	//Unique Companies
 	$("#db_unique_companies").text(df.distinct('corporate_id').count())
 
+  //Unique Companies
+	$("#db_unique_industries").text(df.distinct('company_industry').count())
+
 	//Management Presence
 	$("#db_management").text(String(Math.round(df.stat.mean('management_flag')*100)) + '%')
 
-	//Platinum
-	var platinum_count = df.filter(row => row.get('global_access') == 'Global Access Platinum').count()
-	$("#db_platinum").text(String(Math.round(100 * platinum_count / df.count())) + '%')
+	//Private or Public
+	var private_count = df.filter(row => row.get('market_bucket') == 'Private/unknown').count()
+	$("#db_private").text(String(Math.round(100 * private_count / df.count())) + '%')
+  $("#db_public").text(String(Math.round(100 - (100 * private_count / df.count()))) + '%')
 
 	//Favorite Meeting Type
 	var grouped_df = df.groupBy('meeting_type');
 	var types = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
 	$("#db_meeting_type").text(types[0]['meeting_type']);
 
+  //Favorite Market Bucket
+  var grouped_df = df.groupBy('market_bucket');
+	var types = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+	$("#db_market_bucket").text(types[0]['market_bucket']);
+
 	//Video %
-	var webcast_count = df.filter(row => row.get('webcast') == 'Y').count()
+	var webcast_count = df.filter(row => row.get('medium') == 'Video Conference').count()
 	$("#db_video").text(String(Math.round(100 * webcast_count / df.count())) + '%')
+
+  //US Based %
+  var US_count = df.filter(row => row.get('investor_region') == 'US').count()
+  $("#db_US").text(String(Math.round(100 * US_count / df.count())) + '%')
 
 }
 

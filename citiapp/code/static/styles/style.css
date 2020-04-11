@@ -79,7 +79,7 @@ select {
 }
 
 .data_block_row {
-	
+
 }
 
 .datatable {
@@ -96,6 +96,17 @@ select {
 	font-size:24px;
 	text-align:center;
 	margin-top:40px;
+}
+
+.detail_button_2 {
+	width:100%;
+	padding-top:15px;
+	padding-bottom:15px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	color: #0B4479;
+	font-size:24px;
+	text-align:center;
 }
 
 .div_heading_1 {
@@ -190,6 +201,24 @@ select {
 	border-radius:5px;
 	border-color: #B70000;
 	color:#B70000;
+	font-weight:bold;
+	font-size:18px;
+	margin:10px;
+}
+.report_button {
+	width:250px;
+	border-radius:5px;
+	border-color: #6B7D8D;
+	color:#6B7D8D;
+	font-weight:bold;
+	font-size:18px;
+	margin:10px;
+}
+.portfolio_button {
+	width:250px;
+	border-radius:5px;
+	border-color: #0B4479;
+	color:#0B4479;
 	font-weight:bold;
 	font-size:18px;
 	margin:10px;
