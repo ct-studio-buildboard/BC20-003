@@ -241,7 +241,7 @@ function writeTable(df) {
 	}
 	$("#table_body").empty();
 	$("#table_body").append(html_string);
-	$("#corporate_count").html(df.count());
+	$("#investor_count").html(df.count());
 }
 
 //filter table based on widgets
@@ -285,7 +285,7 @@ function filterTable() {
 		df = df.filter(row => row.get("one_on_one_pct") >= oooPct);
 	}
 
-	$("#corporate_count").val(df.count());
+	$("#investor_count").val(df.count());
 
 	//write the dataframe table to HTML table
 	writeTable(df);
