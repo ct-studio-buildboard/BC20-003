@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block innercontent %}
+
+
+<div class="screen_div">
+  <div class="col-sm-12">
+    <div class="row row_heading">
+  		<div class="col-sm-2">
+  			<div class="div_heading_1">
+  				Investor
+  			</div>
+  		</div>
+  		<div class="col-sm-8">
+  			<div class="text_heading">
+  				Investor Name Obfuscated
+  			</div>
+  		</div>
+      <div class="col-sm-1">
+        <form action="/investors/{{investor_info['acct']}}">
+  			  <button class="detail_button_3">Back</button>
+        </form>
+  		</div>
+  	</div>
+    <div class="row row_heading">
+  		<div class="col-sm-2">
+  			<div class="div_heading_2">
+  				Account
+  			</div>
+  		</div>
+  		<div class="col-sm-6">
+  			<div class="text_heading">
+  				{{ investor_info['acct'] }}
+  			</div>
+  		</div>
+  	</div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="div_heading_1">
+      Similar Investors
+    </div>
+    <div></div>
+
+    <center>
+      <div class="col-md-3">
+        <form action=/investors/{{investor_info['neighbors'][0]}}>
+          <button class="data_block_1">
+            <div class="data_block_heading">{{investor_info['neighbors'][0]}}</div>
+          </button>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <form action=/investors/{{investor_info['neighbors'][1]}}>
+          <button class="data_block_1">
+            <div class="data_block_heading">{{investor_info['neighbors'][1]}}</div>
+          </button>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <form action=/investors/{{investor_info['neighbors'][2]}}>
+          <button class="data_block_1">
+            <div class="data_block_heading">{{investor_info['neighbors'][2]}}</div>
+          </button>
+        </form>
+      </div>
+    </center>
+  </div>
+</div>
+
+
+
+<script>
+
+
+
+$(document).ready(function(){
+
+
+
+});
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

@@ -100,8 +100,18 @@ select {
 	text-align:center;
 	margin-top:40px;
 }
-
 .detail_button_2 {
+	width:100%;
+	padding-top:15px;
+	padding-bottom:15px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	color: #0B4479;
+	font-size:24px;
+	text-align:center;
+}
+
+.similar_button {
 	width:100%;
 	padding-top:15px;
 	padding-bottom:15px;
