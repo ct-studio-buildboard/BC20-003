@@ -4,6 +4,7 @@ import json
 from collections import defaultdict
 import pandas as pd
 import numpy as np
+from sklearn.neighbors import NearestNeighbors
 app = Flask(__name__)
 app.secret_key = '1jfEi4fjJ@3iFso9'
 
@@ -23,7 +24,7 @@ def investors(acct):
 
     if acct == None:
         conn = sqlite3.connect("citi.db")
-        query = """SELECT * from roadshow_investor 
+        query = """SELECT * from roadshow_investor
                     order by total_interactions desc limit 1000"""
         investors = pd.read_sql_query(query, conn)
         conn.close()
@@ -52,7 +53,7 @@ def investors(acct):
         select_values['regions'] = sorted(list(set(investors['investor_region'])))
         select_values['tiers'] = sorted(list(set(investors['global_access'])))
 
-        return render_template('investors_revised.html', 
+        return render_template('investors_revised.html',
                                 data = investors.values.tolist(),
                                 colnames = cols_to_show,
                                 html_colnames = html_colnames,
@@ -61,7 +62,7 @@ def investors(acct):
 
     else:
         conn = sqlite3.connect("citi.db")
-        query = """SELECT * from interactions_roadshow 
+        query = """SELECT * from interactions_roadshow
                     where acct == {}
                     order by 'date' """.format(acct)
         df = pd.read_sql_query(query, conn)
@@ -72,13 +73,42 @@ def investors(acct):
         investor_info = {}
         investor_info['acct'] = acct
 
-
-        return render_template('view_investor.html', 
+        return render_template('view_investor.html',
                                 year_set = year_set,
                                 investor_info = investor_info,
                                 data = json.dumps(df.values.tolist()),
                                 colnames = list(df.columns))
 
+
+@app.route('/investors/<acct>/similar_investors.html')
+def similar_investors(acct):
+    conn = sqlite3.connect("citi.db")
+    query = """SELECT * from roadshow_investor"""
+    investors = pd.read_sql_query(query, conn)
+    conn.close()
+
+    investors.fillna(0, inplace=True)
+
+    correlation_columns = ['total_interactions', 'unique_corporates', 'unique_industries', 'one_on_one_pct',
+                  'group_pct', 'management_pct', 'market_cap_mean', 'market_cap_median', 'large_pct',
+                  'private_pct', 'us_pct']
+    knn_investor = NearestNeighbors(n_neighbors=3).fit(investors.loc[:, correlation_columns])
+    neighbors = knn_investor.kneighbors(return_distance=False)
+
+    acct_index = investors.index[investors['acct'] == int(acct)]
+    acct_neighbors = [investors.iloc[n]['acct'] for n in neighbors[acct_index][0]]
+
+    year_set = sorted(list(set(investors['year'])), reverse = True)
+
+    investor_info = {}
+    investor_info['acct'] = acct
+    investor_info['neighbors'] = acct_neighbors
+
+    return render_template('similar_investors.html',
+                            year_set = year_set,
+                            investor_info = investor_info,
+                            data = json.dumps(investors.values.tolist()),
+                            colnames = list(investors.columns))
 
 
 @app.route('/corporates/', defaults={'corporate_id': None})
@@ -88,7 +118,7 @@ def corporates(corporate_id):
     if corporate_id == None:
 
         conn = sqlite3.connect("citi.db")
-        query = """SELECT * from roadshow_company 
+        query = """SELECT * from roadshow_company
                     order by total_interactions desc limit 1000"""
         corporates = pd.read_sql_query(query, conn)
         conn.close()
@@ -115,7 +145,7 @@ def corporates(corporate_id):
         select_values['years'] = sorted(list(set(corporates['year'])), reverse=True)
         select_values['regions'] = sorted(list(set(corporates['company_region'])))
 
-        return render_template('corporates.html', 
+        return render_template('corporates.html',
                                 data = corporates.values.tolist(),
                                 colnames = cols_to_show,
                                 html_colnames = html_colnames,
@@ -125,7 +155,7 @@ def corporates(corporate_id):
     else:
 
         conn = sqlite3.connect("citi.db")
-        query = """SELECT * FROM interactions_roadshow 
+        query = """SELECT * FROM interactions_roadshow
                     WHERE corporate_id = {}
                     ORDER BY 'date' """.format(corporate_id)
         df = pd.read_sql_query(query, conn)
