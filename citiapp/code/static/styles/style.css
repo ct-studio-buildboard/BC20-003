@@ -59,6 +59,19 @@ select {
 	font-weight:bold;
 }
 
+.data_block_3 {
+	padding: 20px 25px 25px 20px;
+	background: #FFFFFF;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: #0B4479;
+	margin-bottom:20px;
+	color: #0B4479;
+	font-size:30px;
+	text-align:center;
+	font-weight:bold;
+}
+
 .data_block_heading {
 	font-size: 24px;
 	padding: 5px;
@@ -66,7 +79,7 @@ select {
 }
 
 .data_block_row {
-
+	
 }
 
 .datatable {
@@ -192,4 +205,3 @@ select {
 	padding-left:20px;
 	padding-bottom:30px;
 }
-

@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block innercontent %}
+
+
+<div class="screen_div">
+
+	<div class="row row_heading">
+		<div class="col-sm-2">
+			<div class="div_heading_1">
+				Investor
+			</div>
+		</div>
+		<div class="col-sm-10">
+			<div class="text_heading">
+				Investor Name
+			</div>
+		</div>
+	</div>
+
+	<div class="row row_heading">
+		<div class="col-sm-2">
+			<div class="div_heading_2">
+				Account
+			</div>
+		</div>
+		<div class="col-sm-10">
+			<div class="text_heading">
+				{{ investor_info['acct'] }}
+			</div>
+		</div>
+	</div>
+
+  <div class="row year_button_row">
+		<button class="year_button year_selected" value="All">All Time</button>
+		{% for y in year_set %}
+			<button class="year_button" value="{{ y }}">{{ y }}</button>
+		{% endfor %}
+		<button class="year_button" value="Custom">Custom Range</button>
+	</div>
+
+  <div class="row">
+    <div class="col-md-12">
+  		<div class="row" class="data_block_row">
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Total Interactions</div>
+  					<span id="db_total_interactions"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Unique Companies</div>
+            <span id="db_unique_companies"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Unique Industries</div>
+  					<span id="db_market_cap"></span>
+  				</div>
+  			</div>
+        <div class="col-md-3">
+  				<div class="data_block_3">
+  					<div class="data_block_heading">YTD Fees</div>
+  					fees
+  				</div>
+  			</div>
+  		</div>
+  		<div class="row" class="data_block_row">
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Total Interactions</div>
+  					<span id="db_total_interactions"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Unique Investors</div>
+  					<span id="db_unique_investors"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Favorite Meeting Type</div>
+  					<span id="db_meeting_type"></span>
+  				</div>
+  			</div>
+        <div class="col-md-3">
+  				<div class="data_block_3">
+  					<div class="data_block_heading">Favorite Meeting Type</div>
+  					<span id="db_meeting_type"></span>
+  				</div>
+  			</div>
+  		</div>
+      <div class="row" class="data_block_row">
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Platinum</div>
+  					<span id="db_platinum"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Management Presence</div>
+  					<span id="db_management"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Video %</div>
+  					<span id="db_video"></span>
+  				</div>
+  			</div>
+        <div class="col-md-3">
+  				<div class="data_block_3">
+  					<div class="data_block_heading">Video %</div>
+  					<span id="db_video"></span>
+  				</div>
+  			</div>
+  		</div>
+  		<div class="row" class="data_block_row">
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Platinum</div>
+  					<span id="db_platinum"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Management Presence</div>
+  					<span id="db_management"></span>
+  				</div>
+  			</div>
+  			<div class="col-md-3">
+  				<div class="data_block_2">
+  					<div class="data_block_heading">Video %</div>
+  					<span id="db_video"></span>
+  				</div>
+  			</div>
+        <div class="col-md-3">
+  				<div class="data_block_1">
+  					<div class="data_block_heading">Video %</div>
+  					<span id="db_video"></span>
+  				</div>
+  			</div>
+  		</div>
+    </div>
+	</div>
+
+</div>
+
+
+<script>
+
+// read in passed data
+var DataFrame = dfjs.DataFrame;
+var data = {{ data|safe }};
+var colnames = {{ colnames|safe }};
+
+
+function writeDataBlocks(df) {
+
+	//Market cap (most recent)
+	var current_values = df.select('market_cap').toArray();
+	var market_cap = current_values[current_values.length-1][0];
+	if (market_cap != null) {
+		$("#db_market_cap").text(market_cap);
+	} else{
+		$("#db_market_cap").text('NA');
+	}
+
+	//Total Interactions
+	$("#db_total_interactions").text(df.count());
+
+	//Unique Companies
+	$("#db_unique_companies").text(df.distinct('corporate_id').count())
+
+	//Management Presence
+	$("#db_management").text(String(Math.round(df.stat.mean('management_flag')*100)) + '%')
+
+	//Platinum
+	var platinum_count = df.filter(row => row.get('global_access') == 'Global Access Platinum').count()
+	$("#db_platinum").text(String(Math.round(100 * platinum_count / df.count())) + '%')
+
+	//Favorite Meeting Type
+	var grouped_df = df.groupBy('meeting_type');
+	var types = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+	$("#db_meeting_type").text(types[0]['meeting_type']);
+
+	//Video %
+	var webcast_count = df.filter(row => row.get('webcast') == 'Y').count()
+	$("#db_video").text(String(Math.round(100 * webcast_count / df.count())) + '%')
+
+}
+
+function filterYear(year){
+
+	var df = new DataFrame(data, colnames);
+
+	//filter based on year
+	if(!['All', 'Custom'].includes(year)){
+		df = df.filter(row => row.get("year") == year);
+	}
+
+	writeDataBlocks(df);
+}
+
+//write data in dataframe to the HTML table
+function writeTable(df) {
+	var table_values = df.toArray();
+
+	var html_string = "";
+	for (var i=0; i<table_values.length; i++){
+		var row = table_values[i];
+		html_string += "<tr>";
+		for (var j=0; j<row.length; j++){
+			html_string += '<td>' + row[j] + '</td>'
+		}
+		html_string += "</tr>";
+	}
+	$("#table_body").empty();
+	$("#table_body").append(html_string);
+	$("#corporate_count").html(df.count());
+}
+
+//filter table based on widgets
+function filterTable() {
+
+	//create a new dataframe with all original data
+	var df = new DataFrame(data, colnames);
+
+	//filter based on year
+	var year = $("#widget_year").val();
+	if(year != 'All'){
+		df = df.filter(row => row.get("year") == year);
+	}
+
+	var region = $("#widget_region").val();
+	if(region != 'All'){
+		df = df.filter(row => row.get("company_region") == region);
+	}
+
+	var type = $("#widget_type").val();
+	if(type != 'All'){
+		df = df.filter(row => row.get("company_type") == type);
+	}
+
+	if($("#widget_video").is(':checked')){
+		df = df.filter(row => row.get("vid_call_pct") > 0);
+	}
+
+	var minInters = $("#widget_interactions").val();
+	if (minInters > 0){
+		df = df.filter(row => row.get("total_interactions") >= minInters);
+	}
+
+	var mgmtPct = $("#widget_mgmt").val();
+	if (mgmtPct > 0){
+		df = df.filter(row => row.get("management_pct") >= mgmtPct);
+	}
+
+	var oooPct = $("#widget_ooo").val();
+	if (oooPct > 0){
+		df = df.filter(row => row.get("one_on_one_pct") >= oooPct);
+	}
+
+	$("#corporate_count").val(df.count());
+
+	//write the dataframe table to HTML table
+	writeTable(df);
+}
+
+$(document).ready(function(){
+
+	console.log(colnames);
+
+	var df = new DataFrame(data, colnames);
+
+	writeDataBlocks(df);
+
+	$(".year_button").click(function(){
+		$(".year_button").removeClass('year_selected');
+		$(this).addClass('year_selected');
+
+		var year = $(this).val();
+		filterYear(year);
+	});
+
+
+});
+
+
+
+</script>
+
+
+
+
+{% endblock %}
