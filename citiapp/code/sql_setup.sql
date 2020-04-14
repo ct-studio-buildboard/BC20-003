@@ -25,3 +25,10 @@ create table interactions_roadshow as
 	from interactions_raw
 	where event_type in ('Non Deal Roadshow', 'Reverse Roadshow');
 
+create table company_roadshow_revised as
+	select a.corporate_id,
+			b.*
+	from corporates a
+		inner join roadshow_company b on (a.company_name = b.company_name)
+										and (a.company_region = b.company_region);
+

@@ -11,6 +11,10 @@ select {
 	min-width:120px;
 }
 
+text {
+	font-size:20px;
+}
+
 #base_div{
 	font-family: Ruda;
 	font-style: normal;
@@ -20,7 +24,25 @@ select {
 	color:white;
 }
 
-.custom-range{
+
+#overview_button {
+	background: #0B4479;
+	padding:10px;
+	color:white;
+	border-radius:5px;
+	margin-left:10px;
+}
+
+#overview_button_div{
+	padding-left:20px;
+	padding-bottom:30px;
+}
+
+.chart_label {
+	font-size:22px;
+}
+
+.custom-range {
 	width:200px;
 }
 
@@ -111,16 +133,6 @@ select {
 	text-align:center;
 }
 
-.similar_button {
-	width:100%;
-	padding-top:15px;
-	padding-bottom:15px;
-	background: #C7D2DD;
-	border-radius: 5px;
-	color: #0B4479;
-	font-size:24px;
-	text-align:center;
-}
 .detail_button_3 {
 	width:100%;
 	padding-top:8px;
@@ -154,8 +166,16 @@ select {
 	text-align:center;
 }
 
+.graph_bar {
+	fill: #0B4479;
+}
+
 .heading_div {
 	padding-bottom:20px;
+}
+
+.hidden {
+	display:none;
 }
 
 .index_button {
@@ -165,6 +185,13 @@ select {
 	background-color:transparent;
 	color:white;
 	font-size:36px;
+}
+
+.individual_table_div {
+	max-height:400px;
+	width:90%;
+	margin:auto;
+	overflow:scroll;
 }
 
 .output_div {
@@ -186,6 +213,18 @@ select {
 	padding-bottom:40px;
 }
 
+.similar_button {
+	width:100%;
+	padding-top:15px;
+	padding-bottom:15px;
+	background: #C7D2DD;
+	border-radius: 5px;
+	color: #0B4479;
+	font-size:24px;
+	text-align:center;
+}
+
+
 .td_slider_label {
 	padding-left:95px;
 }
@@ -193,6 +232,10 @@ select {
 .text_heading {
 	color: #0B4479;
 	font-size: 36px;
+}
+
+.widget {
+	max-width:240px;
 }
 
 .widget_panel {

@@ -19,7 +19,7 @@
   			</div>
   		</div>
       <div class="col-sm-3">
-        <form action={{investor_info['acct']}}/similar_investors.html>
+        <form action={{ investor_info['acct'] }}/similar_investors.html>
           <button class="similar_button">Similar Investors</button>
         </form>
   		</div>
@@ -56,23 +56,27 @@
     <button class="report_button" value="Custum">Generate Report</button>
 	</div>
 
-  <div class="row">
+  <div id="overview_button_div" class="row hidden">
+    <button id="overview_button">Return to Overview</button>
+  </div>
+
+  <div class="row" id="overview_div">
     <div class="col-md-12">
   		<div class="row" class="data_block_row">
   			<div class="col-md-3">
-  				<button class="data_block_2">
+  				<button class="data_block_2" id="button_interactions">
   					<div class="data_block_heading">Total Interactions</div>
   					<span id="db_total_interactions"></span>
   				</button>
   			</div>
   			<div class="col-md-3">
-  				<button class="data_block_2">
+  				<button class="data_block_2" id="button_unique_corporates">
   					<div class="data_block_heading">Unique Companies</div>
             <span id="db_unique_companies"></span>
   				</button>
   			</div>
   			<div class="col-md-3">
-  				<button class="data_block_2">
+  				<button class="data_block_2" id="button_unique_industries">
   					<div class="data_block_heading">Unique Industries</div>
   					<span id="db_unique_industries"></span>
   				</button>
@@ -86,7 +90,7 @@
   		</div>
   		<div class="row" class="data_block_row">
   			<div class="col-md-3">
-  				<button class="data_block_2">
+  				<button class="data_block_2" id="button_meeting_type">
   					<div class="data_block_heading">Favorite Meeting Type</div>
   					<span id="db_meeting_type"></span>
   				</button>
@@ -124,7 +128,7 @@
   				</button>
   			</div>
   			<div class="col-md-3">
-  				<button class="data_block_2">
+  				<button class="data_block_2" id="button_market_bucket">
   					<div class="data_block_heading">Favorite Market Bucket</div>
   					<span id="db_market_bucket"></span>
   				</button>
@@ -144,7 +148,7 @@
   				</button>
   			</div>
   			<div class="col-md-3">
-  				<button class="data_block_2">
+  				<button class="data_block_2" id="button_us_based">
   					<div class="data_block_heading">US Based Corporates</div>
   					<span id="db_US"></span>
   				</button>
@@ -165,6 +169,188 @@
     </div>
 	</div>
 
+
+  <div id="interactions_table_div" class="hidden detail_div">
+
+    <div class="widget_panel" style="padding-bottom:50px">
+      <div class="row">
+        <div class="col-md-4" style="padding-right:40px; padding-left: 40px">
+          <table>
+            <tr>
+              <td>
+                <label>Corporate Name</label>
+              </td>
+              <td>
+                <select id="widget_company_name" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Corporate Region</label>
+              </td>
+              <td>
+                <select id="widget_company_region" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Corporate Industry</label>
+              </td>
+              <td>
+                <select id="widget_company_industry" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+
+          </table>
+        </div>
+        <div class="col-md-4" style="padding-right:40px; padding-left: 40px">
+          <table>
+            <tr>
+              <td>
+                <label>Event Type</label>
+              </td>
+              <td>
+                <select id="widget_event_type" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Meeting Type</label>
+              </td>
+              <td>
+                <select id="widget_meeting_type" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Investor Region</label>
+              </td>
+              <td>
+                <select id="widget_city" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+
+          </table>
+
+        </div>
+
+        <div class="col-md-4" style="padding-right:40px; padding-left: 40px">
+          <table>
+            <tr>
+              <td>
+                <label>Region Visited</label>
+              </td>
+              <td>
+                <select id="widget_global_region_visited" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Management Present</label>
+              </td>
+              <td>
+                <select id="widget_management_presence" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Video Call</label>
+              </td>
+              <td>
+                <select id="widget_video_flag" class="form-control widget">
+                  <option selected>All</option>
+                </select>
+              </td>
+            </tr>
+
+          </table>
+
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <center>
+      <h2>Total Interactions: <span id="interactions_count"></span></h2>
+    </center>
+
+    <div class="individual_table_div">
+      <table id="interactions_table" class="table table-striped">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div id="unique_corporates_div" class="detail_div hidden">
+    <div class="unique_corporates_table_div">
+      <div class="individual_table_div">
+        <table id="unique_corporates_table" class="table table-striped">
+          <thead>
+            <tr>
+              <th span="col">Corporate Name</th>
+              <th span="col">Corporate Region</th>
+              <th span="col">Corporate Industry</th>
+              <th span="col">Total Interactions</th>
+              <!-- <th span="col">Most Recent Interaction</th> -->
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="unique_industries_div" class="detail_div hidden">
+    <div class="unique_industries_table_div">
+      <div class="individual_table_div">
+        <table id="unique_industries_table" class="table table-striped">
+          <thead>
+            <tr>
+              <th span="col">Industry Name</th>
+              <th span="col">Total Interactions</th>
+              <th span="col">Unique Corporates</th>
+              <!-- <th span="col">Most Recent Interaction</th> -->
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="graphic_div" class="detail_div hidden">
+    <div id="graphic" style="width:80%; margin:auto"></div>
+  </div>
+
+
+
 </div>
 
 
@@ -174,7 +360,263 @@
 var DataFrame = dfjs.DataFrame;
 var data = {{ data|safe }};
 var colnames = {{ colnames|safe }};
+var html_colnames = {{ html_colnames|safe }};
 
+var plot_data_global = [];
+var plot_title_global = "";
+var plot_variable_global = "";
+
+function makePlot(data, title="Interactions by Global Access Tier") {
+
+  console.log(data);
+  plot_data_global = data;
+  plot_title_global = title;
+
+  var final_data = [];
+  var data_total = 0;
+  var data_keys = Object.keys(data[0]);
+
+  for (var i=0; i < data.length; i++){
+    if (data[i][data_keys[0]] == null){
+      final_data.push({'name':'NA',
+            'value':data[i][data_keys[1]]})
+    }
+
+    else {
+      final_data.push({'name':data[i][data_keys[0]],
+            'value':data[i][data_keys[1]]})
+    }
+    data_total += data[i][data_keys[1]];
+    
+  }
+
+
+  $("#graphic").empty();
+
+  //sort bars based on value
+    data = final_data.sort(function (a, b) {
+        return d3.ascending(a.value, b.value);
+    });
+
+
+    var margin = {
+        top: 60,
+        right: 120,
+        bottom: 15,
+        left: 300
+    };
+
+    var width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var svg = d3.select("#graphic").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var x = d3.scale.linear()
+        .range([0, width])
+        .domain([0, d3.max(data, function (d) {
+            return d.value;
+        })]);
+
+    var y = d3.scale.ordinal()
+        .rangeRoundBands([height, 0], .1)
+        .domain(data.map(function (d) {
+            return d.name;
+        }));
+
+    //make y axis to show bar names
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        //no tick marks
+        .tickSize(0)
+        .orient("left");
+
+    var gy = svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+
+    var bars = svg.selectAll(".bar")
+        .data(data)
+        .enter()
+        .append("g")
+
+    //append rects
+    bars.append("rect")
+        .attr("class", "bar")
+        .attr("y", function (d) {
+            return y(d.name);
+        })
+        .attr("height", y.rangeBand())
+        .attr("x", 0)
+        .attr("width", function (d) {
+            return x(d.value);
+        })
+        .attr("class", "graph_bar");
+
+    //add a value label to the right of each bar
+    bars.append("text")
+        .attr("class", "chart_label")
+        //y position of the label is halfway down the bar
+        .attr("y", function (d) {
+            return y(d.name) + y.rangeBand() / 2 + 4;
+        })
+        //x position is 3 pixels to the right of the bar
+        .attr("x", function (d) {
+            return x(d.value) + 3;
+        })
+        .text(function (d) {
+            return String(d.value) + ' (' + String(Math.round(100*d.value / data_total)) + `%)`;
+        });
+
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "32px")   
+        .text(title);
+
+}
+
+//write data in dataframe to the HTML table
+function writeInteractionsTable(df) {
+
+  df = df.select('date', 'company_name', 'company_region', 'company_industry',
+          'event_type', 'meeting_type', 'city', 
+          'global_region_visited', 'management_presence',
+          'video_flag');
+
+  var html_string = "<tr>";
+  var current_columns = df.listColumns();
+  for (var i=0; i<current_columns.length; i++){
+    html_string += `<th span='col'>` + html_colnames[current_columns[i]] + `</th>`;
+  }
+  html_string += '</tr>';
+  $("#interactions_table thead").empty();
+  $("#interactions_table thead").append(html_string);
+
+  var table_values = df.toArray();
+
+  var html_string = "";
+  for (var i=0; i<table_values.length; i++){
+    var row = table_values[i];
+    html_string += "<tr>";
+    for (var j=0; j<row.length; j++){
+      var output = row[j];
+      if(output == null){
+        output = '-'
+      }
+      html_string += '<td>' + output + '</td>'
+    }
+    html_string += "</tr>";
+  }
+
+  $("#interactions_table tbody").empty();
+  $("#interactions_table tbody").append(html_string);
+  // $("#corporate_count").html(df.count());
+}
+
+function populateWidgets(df){
+
+  var current_columns = ['company_name', 'company_region', 'company_industry',
+              'event_type', 'meeting_type', 'city', 
+              'global_region_visited', 'management_presence',
+              'video_flag'];
+
+  for (var i=0; i<current_columns.length; i++){
+    var col = current_columns[i];
+    var values = df.distinct(col).toArray().flat().sort();
+    for (var j=0; j<values.length; j++){
+      if (values[j] != null){
+        $("#widget_"+col).append(`<option>`+values[j]+`</option>`);
+      }
+    }
+  }
+
+
+}
+
+//filter table based on widgets
+function filterInteractionsTable(df) {
+
+  var df = df;
+
+  var current_columns = ['company_name', 'company_region', 'company_industry',
+              'event_type', 'meeting_type', 'city', 
+              'global_region_visited', 'management_presence',
+              'video_flag'];
+
+  for (var i=0; i<current_columns.length; i++){
+    var col = current_columns[i];
+    var value = $("#widget_"+col).val();
+    if(value != 'All'){
+      df = df.filter(row => row.get(col) == value);
+    }
+  }
+
+  $("#interactions_count").text(df.count());
+
+  writeInteractionsTable(df);
+}
+
+function filterCorporatesTable(df) {
+
+  var grouped_df = df.groupBy('corporate_id', 'company_name', 'company_region', 'company_industry');
+  // console.log(grouped_df.show());
+  var corporates = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+
+  var html_string = ""
+  for (var i=0; i<corporates.length; i++){
+    if (corporates[i]['company_name'] == null){
+      continue;
+    }
+
+    var region = corporates[i]['company_region'];
+    if (region == null){
+      region = 'NA'
+    }
+
+    html_string += `<tr>
+              <td><a href="/corporates/` + corporates[i]['corporate_id'] + `">` + corporates[i]['company_name'] + `</a></td>
+              <td>` + region + `</td>
+              <td>` + corporates[i]['company_industry'] + `</td>
+              <td>` + corporates[i]['aggregation'] + `</td>
+
+            </tr>`
+  }
+
+
+  $("#unique_corporates_table tbody").empty();
+  $("#unique_corporates_table tbody").append(html_string);
+
+}
+
+function filterIndustriesTable(df) {
+
+  var grouped_df = df.groupBy('company_industry');
+  var industries = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+
+  var html_string = ""
+  for (var i=0; i<industries.length; i++){
+    if (industries[i]['company_industry'] == null){
+      continue;
+    }
+
+    html_string += `<tr>
+              <td>` + industries[i]['company_industry'] + `</td>
+              <td>` + industries[i]['aggregation'] + `</td>
+              <td>` + industries[i]['aggregation'] + `</td>
+
+            </tr>`
+  }
+
+
+  $("#unique_industries_table tbody").empty();
+  $("#unique_industries_table tbody").append(html_string);
+
+}
 
 function writeDataBlocks(df) {
 
@@ -227,73 +669,10 @@ function filterYear(year){
 		df = df.filter(row => row.get("year") == year);
 	}
 
-	writeDataBlocks(df);
+  return df;
 }
 
-//write data in dataframe to the HTML table
-function writeTable(df) {
-	var table_values = df.toArray();
 
-	var html_string = "";
-	for (var i=0; i<table_values.length; i++){
-		var row = table_values[i];
-		html_string += "<tr>";
-		for (var j=0; j<row.length; j++){
-			html_string += '<td>' + row[j] + '</td>'
-		}
-		html_string += "</tr>";
-	}
-	$("#table_body").empty();
-	$("#table_body").append(html_string);
-	$("#investor_count").html(df.count());
-}
-
-//filter table based on widgets
-function filterTable() {
-
-	//create a new dataframe with all original data
-	var df = new DataFrame(data, colnames);
-
-	//filter based on year
-	var year = $("#widget_year").val();
-	if(year != 'All'){
-		df = df.filter(row => row.get("year") == year);
-	}
-
-	var region = $("#widget_region").val();
-	if(region != 'All'){
-		df = df.filter(row => row.get("company_region") == region);
-	}
-
-	var type = $("#widget_type").val();
-	if(type != 'All'){
-		df = df.filter(row => row.get("company_type") == type);
-	}
-
-	if($("#widget_video").is(':checked')){
-		df = df.filter(row => row.get("vid_call_pct") > 0);
-	}
-
-	var minInters = $("#widget_interactions").val();
-	if (minInters > 0){
-		df = df.filter(row => row.get("total_interactions") >= minInters);
-	}
-
-	var mgmtPct = $("#widget_mgmt").val();
-	if (mgmtPct > 0){
-		df = df.filter(row => row.get("management_pct") >= mgmtPct);
-	}
-
-	var oooPct = $("#widget_ooo").val();
-	if (oooPct > 0){
-		df = df.filter(row => row.get("one_on_one_pct") >= oooPct);
-	}
-
-	$("#investor_count").val(df.count());
-
-	//write the dataframe table to HTML table
-	writeTable(df);
-}
 
 $(document).ready(function(){
 
@@ -302,14 +681,115 @@ $(document).ready(function(){
 	var df = new DataFrame(data, colnames);
 
 	writeDataBlocks(df);
+  filterInteractionsTable(df);
+  filterCorporatesTable(df);
+  filterIndustriesTable(df);
+
+  populateWidgets(df);
 
 	$(".year_button").click(function(){
 		$(".year_button").removeClass('year_selected');
 		$(this).addClass('year_selected');
 
 		var year = $(this).val();
-		filterYear(year);
+		df = filterYear(year);
+
+    writeDataBlocks(df);
+    filterInteractionsTable(df);
+    filterCorporatesTable(df);
+    filterIndustriesTable(df);
+
+
+    var grouped_df = df.groupBy(plot_variable_global);
+    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+    makePlot(plot_data, plot_title_global);
+
 	});
+
+  $("#button_interactions").click(function(){
+    $("#interactions_table_div").removeClass('hidden');
+    $("#interactions_table_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
+
+  $("#overview_button").click(function(){
+    $(".detail_div").hide();
+    $("#overview_button_div").hide();
+    $("#overview_div").show();
+  });
+
+  $("#button_unique_corporates").click(function(){
+    $("#unique_corporates_div").removeClass('hidden');
+    $("#unique_corporates_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
+
+  $("#button_unique_industries").click(function(){
+    $("#unique_industries_div").removeClass('hidden');
+    $("#unique_industries_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
+
+  $("#button_meeting_type").click(function(){
+    plot_variable_global = 'meeting_type';
+    var grouped_df = df.groupBy('meeting_type');
+    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+    makePlot(plot_data, title="Interactions by Meeting Type");
+
+
+    $("#graphic_div").removeClass('hidden');
+    $("#graphic_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
+
+  $("#button_market_bucket").click(function(){
+    plot_variable_global = 'market_bucket';
+    var grouped_df = df.groupBy('market_bucket');
+    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+    makePlot(plot_data, title="Interactions by Market Bucket");
+
+
+    $("#graphic_div").removeClass('hidden');
+    $("#graphic_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
+
+  $("#button_us_based").click(function(){
+    plot_variable_global = 'company_region';
+    var grouped_df = df.groupBy('company_region');
+    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+    makePlot(plot_data, title="Interactions by Corporate Region");
+
+
+    $("#graphic_div").removeClass('hidden');
+    $("#graphic_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
+
+  $(".widget").change(function(){
+    filterInteractionsTable(df);
+  });
+
+
+
 });
 
 

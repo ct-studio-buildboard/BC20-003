@@ -68,16 +68,33 @@ def investors(acct):
         df = pd.read_sql_query(query, conn)
         conn.close()
 
+        df['management_presence'] = np.where(df['management_flag'] == 1, 'Yes', 'No')
+        df['video_flag'] = np.where(df['medium'] == 'Video Conference', 'Yes', 'No')
+        df = df.sort_values('date', ascending=False).reset_index(drop=True)
+
         year_set = sorted(list(set(df['year'])), reverse = True)
 
         investor_info = {}
         investor_info['acct'] = acct
 
+
+        html_colnames = {'acct':'Account ID', 'sgp':'SGP', 'investor_region':'Investor Region',
+                        'equity_tier': 'Equity Tier', 'global_access': 'Global Access', 
+                        'company_name': 'Corporate Name', 'ric':'RIC', 
+                        'company_industry':'Industry', 'product_region':'Product Region',
+                        'company_region': 'Corporate Region', 'company_country':'Corporate Country',
+                        'market_cap':'Market Cap', 'market_bucket':'Market Bucket', 
+                        'ratings':'Ratings', 'date': 'Date', 'event_type':'Event Type', 
+                        'meeting_type':'Meeting Type', 'global_region_visited':'Region Visited',
+                        'city':'City', 'management_presence':'Management Present',
+                        'video_flag': 'Video'}
+
         return render_template('view_investor.html',
                                 year_set = year_set,
                                 investor_info = investor_info,
                                 data = json.dumps(df.values.tolist()),
-                                colnames = list(df.columns))
+                                colnames = list(df.columns),
+                                html_colnames = html_colnames)
 
 
 @app.route('/investors/<acct>/similar_investors.html')
@@ -157,9 +174,26 @@ def corporates(corporate_id):
         conn = sqlite3.connect("citi.db")
         query = """SELECT * FROM interactions_roadshow
                     WHERE corporate_id = {}
-                    ORDER BY 'date' """.format(corporate_id)
+                    ORDER BY 'date' asc """.format(corporate_id)
         df = pd.read_sql_query(query, conn)
         conn.close()
+
+        df['management_presence'] = np.where(df['management_flag'] == 1, 'Yes', 'No')
+        df['video_flag'] = np.where(df['medium'] == 'Video Conference', 'Yes', 'No')
+
+        #Readable Column Names
+        html_colnames = {'acct':'Account ID', 'sgp':'SGP', 'investor_region':'Investor Region',
+                        'equity_tier': 'Equity Tier', 'global_access': 'Global Access', 
+                        'company_name': 'Corporate Name', 'ric':'RIC', 
+                        'company_industry':'Industry', 'product_region':'Product Region',
+                        'company_region': 'Corporate Region', 'company_country':'Corporate Country',
+                        'market_cap':'Market Cap', 'market_bucket':'Market Bucket', 
+                        'ratings':'Ratings', 'date': 'Date', 'event_type':'Event Type', 
+                        'meeting_type':'Meeting Type', 'global_region_visited':'Region Visited',
+                        'city':'City', 'management_presence':'Management Present',
+                        'video_flag': 'Video'}
+
+        
 
         year_set = sorted(list(set(df['year'])), reverse = True)
 
@@ -169,15 +203,22 @@ def corporates(corporate_id):
         corporate_info['company_name'] = df['company_name'][0]
         corporate_info['corporate_id'] = corporate_id
 
+        df = df.sort_values('date', ascending=False).reset_index(drop=True)
+
+        #get investor-level summary
+        df_investors = df.groupby(['acct', 'investor_region', 'global_access']).apply(
+                        lambda x: pd.Series({'total_interactions': x.count(),
+                                            'last_interaction': x['date'].max()})).reset_index()
 
         return render_template('view_corporate.html',
                                 year_set = year_set,
                                 corporate_info = corporate_info,
                                 data = json.dumps(df.values.tolist()),
-                                colnames = list(df.columns))
+                                colnames = list(df.columns),
+                                html_colnames = json.dumps(html_colnames),
+                                df_investors = df_investors)
 
 
 
 if __name__ == '__main__':
-    print('hello world!')
     app.run(debug = True)
