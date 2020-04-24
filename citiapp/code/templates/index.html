@@ -17,9 +17,25 @@
 		    <div id="upload_form_div" style="padding-top: 80px; display:none">
 			    <form action = "/write_data/" method = "POST" 
 		         enctype = "multipart/form-data">
-			         <input class="index_button" type = "file" name = "file" />
-			         <input class="index_button" type = "submit"/>
-			      </form> 	
+			       	<input class="index_button" type = "file" name = "file" accept=".csv">
+			        <input id="submit_button" class="index_button" type = "submit">
+			    </form>
+			</div>
+
+			<div id="flash_div" style="font-size:24px; padding-top:40px; width:60%; margin:auto; text_align:center">
+				<div id="uploading_message" style="display:none">
+					<p style="line-height:normal">Your data is uploading.  This could take several minutes.  Please do not navigate away from this page.</p>
+				</div>
+
+				<div id="message_div">
+					{% with messages = get_flashed_messages() %}
+					  {% if messages %}
+					    {% for message in messages %}
+					    	<p style="line-height:normal">{{ message }}</p>
+					    {% endfor %}
+					  {% endif %}
+					{% endwith %}
+				</div>
 			</div>
 
 		</div>
@@ -31,8 +47,13 @@
 
 	$(document).ready(function(){
 		$("#upload_button").click(function(){
-			$("#upload_form_div").toggle(10)
+			$("#upload_form_div").toggle(10);
+			$("#message_div").hide();
 		});
+
+		$("#submit_button").click(function(){
+			$("#uploading_message").show();
+		})
 
 
 	});

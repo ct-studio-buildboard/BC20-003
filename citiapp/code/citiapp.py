@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, url_for, request, session
+from flask import Flask, redirect, url_for, render_template, url_for, request, session, flash
 import sqlite3
 import json
 from collections import defaultdict
@@ -6,6 +6,8 @@ import pandas as pd
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from werkzeug import secure_filename
+from data_uploader import upload_data
+import os
 
 app = Flask(__name__)
 app.secret_key = '1jfEi4fjJ@3iFso9'
@@ -17,10 +19,16 @@ def index():
 
 @app.route('/write_data/', methods = ['GET', 'POST'])
 def upload_file():
-   if request.method == 'POST':
-      f = request.files['file']
-      f.save(secure_filename(f.filename))
-      return 'file uploaded successfully'
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+
+    result_message = upload_data(f.filename)
+    flash(result_message)
+    os.remove(f.filename)
+
+    return redirect('/')
+
 
 @app.route('/investors/', defaults={'acct': None})
 @app.route('/investors/<acct>')
