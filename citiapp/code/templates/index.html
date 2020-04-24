@@ -4,15 +4,17 @@
 
 	<div id="base_div" style="text-align:center; position:relative; height:90%; background-color:#0b4379;" >
 
-		<div style="position:absolute; top:30%; left:0; width:100%; font-family: Noto Sans, sans-serif;">
+		<div style="position:absolute; top:20%; left:0; width:100%; font-family: Noto Sans, sans-serif;">
 			<p>
 	   			Welcome, Michiko!
 	   		</p>
 		      
-		    <button id="upload_button" class="index_button"> Upload New Dataset</button>
-		    <button class="index_button"> Use Existing Dataset</button>
+	   		<div style="padding-top:80px">
+		    	<button id="upload_button" class="index_button"> Upload New Dataset</button>
+		    	<button class="index_button"> Use Existing Dataset</button>
+		    </div>
 
-		    <div id="upload_form_div" style="padding-top: 40px; display:none">
+		    <div id="upload_form_div" style="padding-top: 80px; display:none">
 			    <form action = "/write_data/" method = "POST" 
 		         enctype = "multipart/form-data">
 			         <input class="index_button" type = "file" name = "file" />
