@@ -5,18 +5,22 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
+from werkzeug import secure_filename
+
 app = Flask(__name__)
 app.secret_key = '1jfEi4fjJ@3iFso9'
 
 @app.route('/')
 def index():
 
-    # conn = sqlite3.connect("citi.db")
-    # query = "SELECT * from interactions_raw limit 20"
-    # interactions = pd.read_sql_query(query, conn)
-    # conn.close()
-
     return render_template('index.html')
+
+@app.route('/write_data/', methods = ['GET', 'POST'])
+def upload_file():
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(secure_filename(f.filename))
+      return 'file uploaded successfully'
 
 @app.route('/investors/', defaults={'acct': None})
 @app.route('/investors/<acct>')
