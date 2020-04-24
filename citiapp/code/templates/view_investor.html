@@ -773,7 +773,6 @@ $(document).ready(function(){
     var grouped_df = df.groupBy(plot_variable_global);
     var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
     makePlot(plot_data, plot_title_global);
-    document.write(year);
 
 	});
 
