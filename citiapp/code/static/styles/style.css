@@ -16,7 +16,7 @@ text {
 }
 
 #base_div{
-	font-family: Ruda;
+	font-family: Noto Sans, sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	font-size: 64px;
@@ -185,6 +185,12 @@ text {
 	background-color:transparent;
 	color:white;
 	font-size:36px;
+	font-family: Noto Sans, sans-serif;
+	padding:8px;
+	padding-left:15px;
+	padding-right:15px;
+	margin-left:30px;
+	margin-right:30px;
 }
 
 .individual_table_div {
