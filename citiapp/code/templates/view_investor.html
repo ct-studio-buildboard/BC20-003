@@ -51,7 +51,7 @@
 		{% for y in year_set %}
 			<button class="year_button" value="{{ y }}">{{ y }}</button>
 		{% endfor %}
-		<button class="year_button" id = "y" value="Custom" data-toggle="modal" data-target="#myModal">Custom Range</button>
+		<button class="year_button" id = "y" value="Custom" data-toggle="modal" data-target="#year_custom">Custom Range</button>
     <button class="portfolio_button" value="Custum">By Portfolio Manager</button>
     <button class="report_button" id = "report" value="Custum">Generate Report</button>
 	</div>
@@ -349,7 +349,7 @@
     <div id="graphic" style="width:80%; margin:auto"></div>
   </div>
 
-  <div id="myModal" class="modal fade" role="dialog">
+  <div id="year_custom" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
