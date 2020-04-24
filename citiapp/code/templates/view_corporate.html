@@ -36,11 +36,7 @@
 		{% for y in year_set %}
 			<button class="year_button" value="{{ y }}">{{ y }}</button>
 		{% endfor %}
-		<select class="selectpicker" multiple>
-			{% for y in year_set %}
-				<option>{{ y }}</option>
-			{% endfor %}
-		</select>
+		<button class="year_button" id = "y" value="Custom" data-toggle="modal" data-target="#year_custom">Custom Range</button>
 	</div>
 
 	<div id="overview_button_div" class="row hidden">
@@ -279,6 +275,50 @@
 	<div id="graphic_div" class="detail_div hidden">
 		<div id="graphic" style="width:80%; margin:auto"></div>
 	</div>
+	<div id="year_custom" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Change Date Range</h4>
+      </div>
+      <div class="modal-body">
+        <div class="widget_panel">
+          <table class="slider_table">
+          <tr>
+            <td>
+              Min. Year
+            </td>
+            <td>
+              <input id="min_yr" class="custom-range widget" type="range" min="2017" max="2019" value="2017">
+            </td>
+            <td class="td_slider_label">
+              <span class="font-weight-bold slider_label">2017</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Max. Year
+            </td>
+            <td>
+              <input id="max_yr" class="custom-range widget" type="range" min="2017" max="2019" value="2019">
+            </td>
+            <td class="td_slider_label">
+              <span class="font-weight-bold slider_label">2019</span>
+            </td>
+          </tr></table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 
 </div>
@@ -612,6 +652,34 @@ $(document).ready(function(){
 		var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
 		makePlot(plot_data, plot_title_global);
 
+	});
+
+	$(".custom-range").change(function() {
+    var current_value = this.value;
+    $(this).closest('tr').find('.slider_label').html(current_value);
+  });
+
+  $(".widget").change(function() {
+    var df = new DataFrame(data, colnames);
+    var min_yr = $("#min_yr").val();
+    df = df.filter(row => row.get("year") >= min_yr);
+    var max_yr = $("#max_yr").val();
+    df = df.filter(row => row.get("year") <= max_yr);
+    console.log(min_yr, max_yr)
+    writeDataBlocks(df);
+    filterInteractionsTable(df);
+    filterCorporatesTable(df);
+    filterIndustriesTable(df);
+
+
+    var grouped_df = df.groupBy(plot_variable_global);
+    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+    makePlot(plot_data, plot_title_global);
+  });
+
+  $("#y").click(function(){
+		$(".year_button").removeClass('year_selected');
+		$(this).addClass('year_selected');
 	});
 
 	$("#button_interactions").click(function(){
