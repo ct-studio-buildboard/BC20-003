@@ -424,7 +424,7 @@ function writeDataBlocks(df) {
 
 	//Market cap (most recent)
 	var current_values = df.select('market_cap').toArray();
-	var market_cap = "$".concat(addCommas(current_values[current_values.length-1][0])).concat(" M");
+	var market_cap = "$".concat(addCommas(current_values[current_values.length-1][0])).concat("MM");
 	if (market_cap != null) {
 		$("#db_market_cap").text(market_cap);
 	} else{

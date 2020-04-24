@@ -634,7 +634,7 @@ function writeDataBlocks(df) {
 
 	//Average Market cap
   var market_cap = Math.round(df.stat.mean('market_cap'))
-  $("#db_market_cap").text('$'.concat(addCommas(market_cap)).concat(' M'));
+  $("#db_market_cap").text('$'.concat(addCommas(market_cap)).concat('MM'));
 
 	//Total Interactions
 	$("#db_total_interactions").text(df.count());
