@@ -5,7 +5,7 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from data_uploader import upload_data
 import os
 
