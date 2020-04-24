@@ -32,3 +32,10 @@ create table company_roadshow_revised as
 		inner join roadshow_company b on (a.company_name = b.company_name)
 										and (a.company_region = b.company_region);
 
+create table interactions_roadshow_revised as 
+select company_name || substr(random(), 3, 1) as event_name,
+'PM' || substr(random(), 3, 1) as pm,
+'Analyst' || substr(random(), 3, 1) as analyst_name,
+'Account Name Obfuscated' as account_name,
+*
+from interactions_roadshow;

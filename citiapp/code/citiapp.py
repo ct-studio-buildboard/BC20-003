@@ -11,10 +11,10 @@ app.secret_key = '1jfEi4fjJ@3iFso9'
 @app.route('/')
 def index():
 
-    conn = sqlite3.connect("citi.db")
-    query = "SELECT * from interactions_raw limit 20"
-    interactions = pd.read_sql_query(query, conn)
-    conn.close()
+    # conn = sqlite3.connect("citi.db")
+    # query = "SELECT * from interactions_raw limit 20"
+    # interactions = pd.read_sql_query(query, conn)
+    # conn.close()
 
     return render_template('index.html')
 
@@ -112,7 +112,7 @@ def similar_investors(acct):
     knn_investor = NearestNeighbors(n_neighbors=3).fit(investors.loc[:, correlation_columns])
     neighbors = knn_investor.kneighbors(return_distance=False)
 
-    acct_index = investors.index[investors['acct'] == int(acct)]
+    acct_index = investors.index[investors['acct'] == acct]
     acct_neighbors = [investors.iloc[n]['acct'] for n in neighbors[acct_index][0]]
 
     year_set = sorted(list(set(investors['year'])), reverse = True)
@@ -201,6 +201,7 @@ def corporates(corporate_id):
         corporate_info['region'] = df['company_region'][0]
         corporate_info['country'] = df['company_country'][0]
         corporate_info['company_name'] = df['company_name'][0]
+        corporate_info['company_industry'] = df['company_industry'][0]
         corporate_info['corporate_id'] = corporate_id
 
         df = df.sort_values('date', ascending=False).reset_index(drop=True)
