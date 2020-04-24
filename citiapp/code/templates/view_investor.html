@@ -91,7 +91,7 @@
   		<div class="row" class="data_block_row">
   			<div class="col-md-3">
   				<button class="data_block_2" id="button_meeting_type">
-  					<div class="data_block_heading">Favorite Meeting Type</div>
+  					<div class="data_block_heading">Prevalent Meeting Type</div>
   					<span id="db_meeting_type"></span>
   				</button>
   			</div>
@@ -129,7 +129,7 @@
   			</div>
   			<div class="col-md-3">
   				<button class="data_block_2" id="button_market_bucket">
-  					<div class="data_block_heading">Favorite Market Bucket</div>
+  					<div class="data_block_heading">Prevalent Market Bucket</div>
   					<span id="db_market_bucket"></span>
   				</button>
   			</div>
@@ -387,7 +387,7 @@ function makePlot(data, title="Interactions by Global Access Tier") {
             'value':data[i][data_keys[1]]})
     }
     data_total += data[i][data_keys[1]];
-    
+
   }
 
 
@@ -472,10 +472,10 @@ function makePlot(data, title="Interactions by Global Access Tier") {
         });
 
     svg.append("text")
-        .attr("x", (width / 2))             
+        .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "32px")   
+        .attr("text-anchor", "middle")
+        .style("font-size", "32px")
         .text(title);
 
 }
@@ -484,7 +484,7 @@ function makePlot(data, title="Interactions by Global Access Tier") {
 function writeInteractionsTable(df) {
 
   df = df.select('date', 'company_name', 'company_region', 'company_industry',
-          'event_type', 'meeting_type', 'city', 
+          'event_type', 'meeting_type', 'city',
           'global_region_visited', 'management_presence',
           'video_flag');
 
@@ -521,7 +521,7 @@ function writeInteractionsTable(df) {
 function populateWidgets(df){
 
   var current_columns = ['company_name', 'company_region', 'company_industry',
-              'event_type', 'meeting_type', 'city', 
+              'event_type', 'meeting_type', 'city',
               'global_region_visited', 'management_presence',
               'video_flag'];
 
@@ -544,7 +544,7 @@ function filterInteractionsTable(df) {
   var df = df;
 
   var current_columns = ['company_name', 'company_region', 'company_industry',
-              'event_type', 'meeting_type', 'city', 
+              'event_type', 'meeting_type', 'city',
               'global_region_visited', 'management_presence',
               'video_flag'];
 
@@ -618,10 +618,23 @@ function filterIndustriesTable(df) {
 
 }
 
+function addCommas(nStr){
+  nStr += '';
+  var x = nStr.split('.');
+  var x1 = x[0];
+  var x2 = x.length > 1 ? '.' + x[1] : '';
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+  }
+  return x1 + x2;
+}
+
 function writeDataBlocks(df) {
 
 	//Average Market cap
-  $("#db_market_cap").text(Math.round(df.stat.mean('market_cap')));
+  var market_cap = Math.round(df.stat.mean('market_cap'))
+  $("#db_market_cap").text('$'.concat(addCommas(market_cap)).concat(' M'));
 
 	//Total Interactions
 	$("#db_total_interactions").text(df.count());
@@ -648,7 +661,11 @@ function writeDataBlocks(df) {
   //Favorite Market Bucket
   var grouped_df = df.groupBy('market_bucket');
 	var types = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
-	$("#db_market_bucket").text(types[0]['market_bucket']);
+  var market_bucket = types[0]['market_bucket'];
+  if (market_bucket == 'Private/unknown'){
+    market_bucket = 'Private/other';
+  }
+	$("#db_market_bucket").text(market_bucket);
 
 	//Video %
 	var webcast_count = df.filter(row => row.get('medium') == 'Video Conference').count()

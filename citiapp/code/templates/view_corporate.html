@@ -81,7 +81,7 @@
 				</div>
 				<div class="col-md-4">
 					<button class="data_block_2" id="button_meeting_type">
-						<div class="data_block_heading">Favorite Meeting Type</div>
+						<div class="data_block_heading">Prevalent Meeting Type</div>
 						<span id="db_meeting_type"></span>
 					</button>
 				</div>
@@ -315,7 +315,7 @@ function makePlot(data, title="Interactions by Global Access Tier") {
 						'value':data[i][data_keys[1]]})
 		}
 		data_total += data[i][data_keys[1]];
-		
+
 	}
 
 
@@ -400,20 +400,31 @@ function makePlot(data, title="Interactions by Global Access Tier") {
         });
 
     svg.append("text")
-        .attr("x", (width / 2))             
+        .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "32px")   
+        .attr("text-anchor", "middle")
+        .style("font-size", "32px")
         .text(title);
 
 }
 
+function addCommas(nStr){
+  nStr += '';
+  var x = nStr.split('.');
+  var x1 = x[0];
+  var x2 = x.length > 1 ? '.' + x[1] : '';
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+  }
+  return x1 + x2;
+}
 
 function writeDataBlocks(df) {
 
 	//Market cap (most recent)
 	var current_values = df.select('market_cap').toArray();
-	var market_cap = current_values[current_values.length-1][0];
+	var market_cap = "$".concat(addCommas(current_values[current_values.length-1][0])).concat(" M");
 	if (market_cap != null) {
 		$("#db_market_cap").text(market_cap);
 	} else{
@@ -434,7 +445,7 @@ function writeDataBlocks(df) {
 	console.log(platinum_count);
 	$("#db_platinum").text(String(Math.round(100 * platinum_count / df.count())) + '%')
 
-	//Favorite Meeting Type
+	//Prevalent Meeting Type
 	var grouped_df = df.groupBy('meeting_type');
 	var types = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
 	$("#db_meeting_type").text(types[0]['meeting_type']);
@@ -461,7 +472,7 @@ function filterYear(year){
 function writeInteractionsTable(df) {
 
 	df = df.select('date', 'global_access', 'acct', 'investor_region',
-					'event_type', 'meeting_type', 'city', 
+					'event_type', 'meeting_type', 'city',
 					'global_region_visited', 'management_presence',
 					'video_flag');
 
@@ -497,7 +508,7 @@ function writeInteractionsTable(df) {
 function populateWidgets(df){
 
 	var current_columns = ['global_access', 'acct', 'investor_region',
-							'event_type', 'meeting_type', 'city', 
+							'event_type', 'meeting_type', 'city',
 							'global_region_visited', 'management_presence',
 							'video_flag'];
 
@@ -520,7 +531,7 @@ function filterInteractionsTable(df) {
 	var df = df;
 
 	var current_columns = ['global_access', 'acct', 'investor_region',
-							'event_type', 'meeting_type', 'city', 
+							'event_type', 'meeting_type', 'city',
 							'global_region_visited', 'management_presence',
 							'video_flag'];
 
