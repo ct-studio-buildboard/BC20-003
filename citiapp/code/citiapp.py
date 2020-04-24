@@ -79,12 +79,12 @@ def investors(acct):
 
 
         html_colnames = {'acct':'Account ID', 'sgp':'SGP', 'investor_region':'Investor Region',
-                        'equity_tier': 'Equity Tier', 'global_access': 'Global Access', 
-                        'company_name': 'Corporate Name', 'ric':'RIC', 
+                        'equity_tier': 'Equity Tier', 'global_access': 'Global Access',
+                        'company_name': 'Corporate Name', 'ric':'RIC',
                         'company_industry':'Industry', 'product_region':'Product Region',
                         'company_region': 'Corporate Region', 'company_country':'Corporate Country',
-                        'market_cap':'Market Cap', 'market_bucket':'Market Bucket', 
-                        'ratings':'Ratings', 'date': 'Date', 'event_type':'Event Type', 
+                        'market_cap':'Market Cap', 'market_bucket':'Market Bucket',
+                        'ratings':'Ratings', 'date': 'Date', 'event_type':'Event Type',
                         'meeting_type':'Meeting Type', 'global_region_visited':'Region Visited',
                         'city':'City', 'management_presence':'Management Present',
                         'video_flag': 'Video'}
@@ -183,17 +183,17 @@ def corporates(corporate_id):
 
         #Readable Column Names
         html_colnames = {'acct':'Account ID', 'sgp':'SGP', 'investor_region':'Investor Region',
-                        'equity_tier': 'Equity Tier', 'global_access': 'Global Access', 
-                        'company_name': 'Corporate Name', 'ric':'RIC', 
+                        'equity_tier': 'Equity Tier', 'global_access': 'Global Access',
+                        'company_name': 'Corporate Name', 'ric':'RIC',
                         'company_industry':'Industry', 'product_region':'Product Region',
                         'company_region': 'Corporate Region', 'company_country':'Corporate Country',
-                        'market_cap':'Market Cap', 'market_bucket':'Market Bucket', 
-                        'ratings':'Ratings', 'date': 'Date', 'event_type':'Event Type', 
+                        'market_cap':'Market Cap', 'market_bucket':'Market Bucket',
+                        'ratings':'Ratings', 'date': 'Date', 'event_type':'Event Type',
                         'meeting_type':'Meeting Type', 'global_region_visited':'Region Visited',
                         'city':'City', 'management_presence':'Management Present',
                         'video_flag': 'Video'}
 
-        
+
 
         year_set = sorted(list(set(df['year'])), reverse = True)
 

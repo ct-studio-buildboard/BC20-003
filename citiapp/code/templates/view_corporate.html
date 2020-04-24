@@ -36,7 +36,11 @@
 		{% for y in year_set %}
 			<button class="year_button" value="{{ y }}">{{ y }}</button>
 		{% endfor %}
-		<button class="year_button" value="Custom">Custom Range</button>
+		<select class="selectpicker" multiple>
+			{% for y in year_set %}
+				<option>{{ y }}</option>
+			{% endfor %}
+		</select>
 	</div>
 
 	<div id="overview_button_div" class="row hidden">
@@ -424,7 +428,7 @@ function writeDataBlocks(df) {
 
 	//Market cap (most recent)
 	var current_values = df.select('market_cap').toArray();
-	var market_cap = "$".concat(addCommas(current_values[current_values.length-1][0])).concat(" M");
+	var market_cap = "$".concat(addCommas(current_values[current_values.length-1][0])).concat("MM");
 	if (market_cap != null) {
 		$("#db_market_cap").text(market_cap);
 	} else{
@@ -464,6 +468,7 @@ function filterYear(year){
 	if(!['All', 'Custom'].includes(year)){
 		df = df.filter(row => row.get("year") == year);
 	}
+
 
 	return df;
 }
@@ -579,6 +584,7 @@ function filterInvestorsTable(df) {
 	$("#unique_investors_table tbody").append(html_string);
 
 }
+$('.selectpicker').addClass('year_button').selectpicker('setStyle');
 
 $(document).ready(function(){
 
