@@ -359,6 +359,7 @@
         <h4 class="modal-title">Change Date Range</h4>
       </div>
       <div class="modal-body">
+        <div>Please make sure to select Max Year >= Min Year</div>
         <div class="widget_panel">
           <table class="slider_table">
           <tr>
@@ -784,12 +785,12 @@ $(document).ready(function(){
   });
 
   $(".widget").change(function() {
-    var df = new DataFrame(data, colnames);
+    df = new DataFrame(data, colnames);
     var min_yr = $("#min_yr").val();
     df = df.filter(row => row.get("year") >= min_yr);
     var max_yr = $("#max_yr").val();
     df = df.filter(row => row.get("year") <= max_yr);
-    console.log(min_yr, max_yr)
+
     writeDataBlocks(df);
     filterInteractionsTable(df);
     filterCorporatesTable(df);
