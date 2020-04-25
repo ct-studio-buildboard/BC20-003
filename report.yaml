@@ -2,7 +2,7 @@ company:
   name: Right Direction (Citi Global Markets)
   logo: citi_logo_resized.jpg
 product_narrative: |
-  Roadshow™ is a data-driven dashboard assuring end-to-end visibility across the corporate access event-planning process. It leverages ML to provide insights, recommendations and predictions that drive a better understanding of client demand, reduce cancellation rates and drive profitability.
+  Accelerate is a data-driven dashboard assuring end-to-end visibility across the corporate access event-planning process. It leverages ML to provide insights, recommendations and predictions that drive a better understanding of client demand, reduce cancellation rates and drive profitability.
 team:
   picture: right_direction_600_400.jpg
   roster:
@@ -39,3 +39,5 @@ assets:
   url: https://drive.google.com/file/d/1-bMSrdCA3fujAud0Ou7SbpgAmTX4xrAl/view?usp=sharing
 - title: Crit 2
   url: https://drive.google.com/file/d/1T2cOrmNJiKy2SsdfcgmK39xw1LXlHqIG/view?usp=sharing
+- title: Sprint 3
+  url: https://drive.google.com/file/d/1BA8HWD_goI3moi5oj_iuQZqUKKpBBdQU/view?usp=sharing
