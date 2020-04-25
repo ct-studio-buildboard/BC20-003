@@ -53,7 +53,7 @@
 		{% endfor %}
 		<button class="year_button" id = "y" value="Custom" data-toggle="modal" data-target="#year_custom">Custom Range</button>
     <button class="portfolio_button" value="Custum">By Portfolio Manager</button>
-    <button class="report_button" id = "report" value="Custum">Generate Report</button>
+    <button class="report_button" id = "button_report" value="Custum">Generate Report</button>
 	</div>
 
   <div id="overview_button_div" class="row hidden">
@@ -340,6 +340,82 @@
           <tbody>
           </tbody>
         </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="generate_report_div" class="detail_div hidden">
+    <div class="report_select_div">
+      <div>
+      <div class = "text_heading2">Select items to be included in report:</div>
+        <div class = "row">
+          <div class = "col-md-1"></div>
+          <div class = "col-md-5 text_heading2">
+            <div>
+              <input type="checkbox" id="interactions_check" name="interactions_check">
+              <label for="interactions_check">Total Interactions</label>
+            </div>
+            <div>
+              <input type="checkbox" id="unique_companies_check" name="unique_companies_check">
+              <label for="unique_companies_check">Unique Companies</label>
+            </div>
+            <div>
+              <input type="checkbox" id="unique_industries_check" name="unique_industries_check">
+              <label for="unique_industries_check">Unique Industries</label>
+            </div>
+            <div>
+              <input type="checkbox" id="meeting_type_check" name="meeting_type_check">
+              <label for="meeting_type_check">Prevalent Meeting Type</label>
+            </div>
+            <div>
+              <input type="checkbox" id="management_check" name="management_check">
+              <label for="management_check">Management Presence</label>
+            </div>
+            <div>
+              <input type="checkbox" id="private_check" name="private_check">
+              <label for="private_check">Private Corporates</label>
+            </div>
+            <div>
+              <input type="checkbox" id="public_check" name="public_check">
+              <label for="public_check">Public Corporates</label>
+            </div>
+            <div>
+              <input type="checkbox" id="market_cap_check" name="market_cap_check">
+              <label for="market_cap_check">Average Market Cap</label>
+            </div>
+          </div>
+          <div class = "col-md-5 text_heading2">
+            <div>
+              <input type="checkbox" id="market_bucket_check" name="market_bucket_check">
+              <label for="market_bucket_check">Prevalent Market Bucket</label>
+            </div>
+            <div>
+              <input type="checkbox" id="cancelation_check" name="cancelation_check">
+              <label for="cancelation_check">Total Cancelations</label>
+            </div>
+            <div>
+              <input type="checkbox" id="us_check" name="us_check">
+              <label for="us_check">U.S. Based Corporates</label>
+            </div>
+            <div>
+              <input type="checkbox" id="video_conf_check" name="video_conf_check">
+              <label for="video_conf_check">Video Conference</label>
+            </div>
+            <div>
+              <input type="checkbox" id="fees_check" name="ytd_fees_check">
+              <label for="ytd_fees_check">Fees</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class = "col-sm-12">
+        <div class = "row">
+          <div class = "col-md-6"></div>
+          <div class = "col-md-3">
+            <button class = "gen_report_button">Generate Report</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -806,6 +882,15 @@ $(document).ready(function(){
 		$(".year_button").removeClass('year_selected');
 		$(this).addClass('year_selected');
 	});
+
+  $("#button_report").click(function(){
+    $("#generate_report_div").removeClass('hidden');
+    $("#generate_report_div").show();
+
+    $("#overview_div").hide();
+    $("#overview_button_div").removeClass('hidden');
+    $("#overview_button_div").show();
+  });
 
   $("#button_interactions").click(function(){
     $("#interactions_table_div").removeClass('hidden');

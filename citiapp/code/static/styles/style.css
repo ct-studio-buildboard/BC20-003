@@ -230,6 +230,16 @@ text {
 	text-align:center;
 }
 
+.gen_report_button {
+	width:100%;
+	padding-top:15px;
+	padding-bottom:15px;
+	border-radius:5px;
+	background: #C7D2DD;
+	color:#0B4479;
+	font-size:24px;
+}
+
 
 .td_slider_label {
 	padding-left:95px;
@@ -238,6 +248,12 @@ text {
 .text_heading {
 	color: #0B4479;
 	font-size: 36px;
+}
+
+.text_heading2 {
+	color: #0B4479;
+	font-size: 24px;
+	padding-bottom: 24px;
 }
 
 .widget {
