@@ -24,7 +24,7 @@
 	 			<table>
 	 				{% for inv in top_investors %}
 	 					<tr>
-	 						<td>Acct. {{ inv[0] }}</td>
+	 						<td><a href="/investors/{{ inv[0] }}">Acct. {{ inv[0] }}</a></td>
 	 						<td style="padding-left:30px">{{ inv[1] }}</td>
 	 					</tr>	
 	 				{% endfor %}
@@ -60,8 +60,8 @@
 								<td>
 									<select id="widget_region" class="form-control widget">
 										<option selected>All</option>
-										{% for year in select_values['regions'] %}
-											<option>{{ year }}</option>
+										{% for region in select_values['regions'] %}
+											<option>{{ region }}</option>
 										{% endfor %}
 									</select>
 								</td>

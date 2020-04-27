@@ -139,6 +139,28 @@ def similar_investors(acct):
                             data = json.dumps(investors.values.tolist()),
                             colnames = list(investors.columns))
 
+@app.route('/search')
+def search():
+    search_term = request.args.get('search')
+    if search_term.strip()=='' or search_term == None:
+        return render_template('search.html',
+                                searched = 'no search text entered',
+                                results = [],
+                                columns = [])
+
+    else:
+        conn = sqlite3.connect("citi.db")
+        query = """SELECT * FROM corporates
+                    WHERE company_name LIKE '%"""+search_term+"%'"
+        results = pd.read_sql_query(query, conn)
+        conn.close()
+
+        columns = ['Name', 'Company Region', 'Company Country', 'Company Industry']
+
+        return render_template('search.html',
+                                searched = search_term,
+                                results = results.values.tolist(),
+                                columns = columns)
 
 @app.route('/corporates/', defaults={'corporate_id': None})
 @app.route('/corporates/<corporate_id>')

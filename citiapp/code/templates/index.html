@@ -11,7 +11,7 @@
 		      
 	   		<div style="padding-top:80px">
 		    	<button id="upload_button" class="index_button"> Upload New Dataset</button>
-		    	<button class="index_button"> Use Existing Dataset</button>
+		    	<button id="use_existing_button" class="index_button"> Use Existing Dataset</button>
 		    </div>
 
 		    <div id="upload_form_div" style="padding-top: 80px; display:none">
@@ -53,6 +53,9 @@
 
 		$("#submit_button").click(function(){
 			$("#uploading_message").show();
+		});
+		$("#use_existing_button").click(function(){
+			location.href = "/investors";
 		})
 
 

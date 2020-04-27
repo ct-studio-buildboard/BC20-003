@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block innercontent %}
+<div class="screen_div">
+
+	<div class="heading_div">
+ 		<h1>SEARCH</h1>
+ 	</div>
+
+ 	<div class="row">
+	 	<div class="col-sm-3">
+	 		<div class="data_block_1">
+	 			<h5>Results</h5>
+	 			<center>
+	 				{{ results|length }}
+	 			</center>
+
+	 		</div>
+
+	 	</div>
+
+	 	<div class="col-sm-9">
+			
+
+			<div class="output_div" style="padding:30px">
+				<center>
+					<h2>Results for: <span id="term">{{ searched }}</span></h2>
+				</center>
+
+				<div class="output_table_div">
+					<table id="results_table" class="table table-striped">
+						<thead>
+							<tr>
+								{% for c in columns %}
+									<th span="col">{{ c }}</th>
+								{% endfor %}
+							</tr>
+							{% for res in results %}
+							<tr>
+								<td><a href="/corporates/{{ res[0] }}">{{ res[1] }}</a><td>
+								<td>{{ res[2] }}<td>
+								<td>{{ res[3] }}<td>
+								<td>{{ res[4] }}<td>
+							</tr>
+							{% endfor %}
+							</tbody>
+						</thead>
+
+					</table>
+				</div>
+
+
+			</div>
+
+		</div>
+
+	</div>
+
+</div>
+
+
+<script>
+
+	$(document).ready(function(){
+		console.log('Loaded SEARCH');
+
+	});
+
+</script>
+
+
+    
+{% endblock %}
