@@ -1,5 +1,1 @@
-Incorrect yaml format for report.yaml: mapping values are not allowed here
-  in "<byte string>", line 5, column 10:
-      picture: right_direction_600_400.jpg
-             ^.
-Unable to fetch assets for BC20-003.
+Assets we could fetch: ['report.yaml', 'citi_logo_resized.jpg', 'right_direction_600_400.jpg', 'eyal_resized.jpg', 'flor.jpg', 'melanie.jpg', 'nick.jpg', 'simran.jpg', 'plamena.jpg']
