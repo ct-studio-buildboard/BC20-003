@@ -8,6 +8,7 @@ from sklearn.neighbors import NearestNeighbors
 from werkzeug.utils import secure_filename
 from data_uploader import upload_data
 import os
+import utils
 
 app = Flask(__name__)
 app.secret_key = '1jfEi4fjJ@3iFso9'
@@ -29,6 +30,81 @@ def upload_file():
 
     return redirect('/')
 
+@app.route('/report-investor/', defaults={'acct': 9601})
+@app.route('/report-investor/<acct>')
+def report_investor(acct):
+
+    conn = sqlite3.connect("citi.db")
+    query = """SELECT * from interactions_roadshow
+                where acct = {}
+                order by 'date' """.format(acct)
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+
+    print(df.columns)
+    print(df.head())
+
+    stats = {}
+    stats['unique_corporates'] = df.corporate_id.nunique()
+    stats['unique_industries'] = df.company_industry.nunique()
+    stats['mgmt'] = str(round(100 * df.management_flag.mean(), 1)) + '%'
+
+    #getting interactions by year
+    temp_df = df.groupby('year')['date'].count().reset_index().rename(columns={'date':'ct'})
+    int_year = []
+    for i, r in temp_df.iterrows():
+        int_year.append({'year':r['year'], 'value':r['ct']})
+
+    #getting interactions by type
+    temp_df = df['meeting_type'].value_counts().to_frame().reset_index()
+    temp_df.columns = ['meeting_type', 'ct']
+    if (temp_df['ct'] < 0.05*df.shape[0]).sum() > 1:
+        temp_df.loc[temp_df['ct'] < 0.05*df.shape[0], 'meeting_type'] = 'Other'
+    temp_df = temp_df.groupby('meeting_type')['ct'].sum().reset_index().sort_values('ct', ascending=False)
+    pcts = list((temp_df['ct']/df.shape[0]).round(2))
+    int_type_positions = utils.get_donut_lines(pcts)
+    int_type = {}
+    for i, r in temp_df.iterrows():
+        int_type[r['meeting_type']] = round(100 * r['ct'] / df.shape[0], 1)
+
+    #getting interactions by market cap
+    temp_df = df['market_bucket'].value_counts().to_frame().reset_index()
+    temp_df.columns = ['market_bucket', 'ct']
+    if (temp_df['ct'] < 0.05*df.shape[0]).sum() > 1:
+        temp_df.loc[temp_df['ct'] < 0.05*df.shape[0], 'market_bucket'] = 'Other'
+    temp_df = temp_df.groupby('market_bucket')['ct'].sum().reset_index().sort_values('ct', ascending=False)
+    pcts = list((temp_df['ct']/df.shape[0]).round(2))
+    int_bucket_positions = utils.get_donut_lines(pcts)
+    int_bucket = {}
+    for i, r in temp_df.iterrows():
+        dict_key = r['market_bucket']
+        if dict_key == 'Private/unknown':
+            dict_key = 'NA'
+        int_bucket[dict_key] = round(100 * r['ct'] / df.shape[0], 1)
+
+    #getting interactions by company region
+    temp_df = df['company_region'].value_counts().to_frame().reset_index()
+    temp_df.columns = ['company_region', 'ct']
+    if (temp_df['ct'] < 0.05*df.shape[0]).sum() > 1:
+        temp_df.loc[temp_df['ct'] < 0.05*df.shape[0], 'company_region'] = 'Other'
+    temp_df = temp_df.groupby('company_region')['ct'].sum().reset_index().sort_values('ct', ascending=False)
+
+    pcts = list((temp_df['ct']/df.shape[0]).round(2))
+    int_region_positions = utils.get_donut_lines(pcts)
+    int_region = {}
+    for i, r in temp_df.iterrows():
+        int_region[r['company_region']] = round(100 * r['ct'] / df.shape[0], 1)
+
+
+    return render_template('report_investor.html', 
+                            stats=stats,
+                            int_year=int_year,
+                            int_type=int_type,
+                            int_type_positions=int_type_positions,
+                            int_bucket=int_bucket,
+                            int_bucket_positions=int_bucket_positions,
+                            int_region=int_region,
+                            int_region_positions=int_region_positions)
 
 @app.route('/investors/', defaults={'acct': None})
 @app.route('/investors/<acct>')

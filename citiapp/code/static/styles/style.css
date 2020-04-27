@@ -208,6 +208,43 @@ text {
 	overflow:scroll;
 }
 
+.report_block_1 {
+	background: #0B4479;
+	border-radius: 10px;
+	display:inline-block;
+	color:white;
+	padding:10px 20px 10px 20px;
+}
+
+.report_block_2 {
+	background: #6B7D8D;
+	border-radius: 10px;
+	display:inline-block;
+	color:white;
+	padding:10px 30px 10px 30px;
+	width:100%;
+	margin:10px 0px 10px 0px;
+}
+
+.report_block_2 table {
+	color:white;
+	width:100%;
+	font-size:40px;
+}
+
+.report_block_stat {
+	text-align:right;
+	font-weight:bold;
+}
+
+.report_container {
+	padding:20px 30px 30px 30px;
+}
+
+.report_section {
+	border-bottom:2px solid #0B4479;
+}
+
 .row_heading {
 	padding-bottom: 15px;
 }

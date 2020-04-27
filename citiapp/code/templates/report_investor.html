@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block headcontent %}
+<style type="text/css">
+
+@media print {
+
+  .report_container {
+    transform: scale(.4);
+    -webkit-print-color-adjust: exact !important;
+  }
+  
+
+  .report_block_1 {
+    background: #0B4479;
+    border-radius: 10px;
+    display:inline-block;
+    color:white;
+    padding:10px 20px 10px 20px;
+  }
+
+   .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+        float: left;
+   }
+   .col-sm-12 {
+        width: 100%;
+   }
+   .col-sm-11 {
+        width: 91.66666667%;
+   }
+   .col-sm-10 {
+        width: 83.33333333%;
+   }
+   .col-sm-9 {
+        width: 75%;
+   }
+   .col-sm-8 {
+        width: 66.66666667%;
+   }
+   .col-sm-7 {
+        width: 58.33333333%;
+   }
+   .col-sm-6 {
+        width: 50%;
+   }
+   .col-sm-5 {
+        width: 41.66666667%;
+   }
+   .col-sm-4 {
+        width: 33.33333333%;
+   }
+   .col-sm-3 {
+        width: 25%;
+   }
+   .col-sm-2 {
+        width: 16.66666667%;
+   }
+   .col-sm-1 {
+        width: 8.33333333%;
+   }
+
+}
+</style>
+{% endblock %}
+
+
+{% block innercontent %}
+<div class="report_container">
+
+  <div class="report_section">
+
+    <div class="report_block_1">
+      
+      <p style="color:white; font-size:36px">Fidelity Investments - Data Report</p>
+      <p style="font-size:28px">Generated on: 4/24/2020</p>
+
+    </div>
+
+    <div class="row" style="padding-top:40px; padding-bottom:40px; width:80%; margin:auto">
+      <div class="col-sm-7" style="padding-left:80px">
+        <h2>Interactions by Year</h2>
+        <svg id="interactions_svg" width="800" height="400"></svg>
+      </div>
+
+      <div class="col-sm-5" style="padding-top:60px">
+        <div class="report_block_2" style="color:white">
+          <table style="width:100%">
+            <tr>
+              <td>Unique Corporates</td>
+              <td class="report_block_stat">{{ stats['unique_corporates'] }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="report_block_2" style="color:white">
+          <table style="width:100%">
+            <tr>
+              <td>Unique Industries</td>
+              <td class="report_block_stat">{{ stats['unique_industries'] }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="report_block_2" style="color:white">
+          <table style="width:100%">
+            <tr>
+              <td>Mgmt Presence</td>
+              <td class="report_block_stat">{{ stats['mgmt'] }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="report_block_2" style="color:white">
+          <table style="width:100%">
+            <tr>
+              <td>Cancelation Rate</td>
+              <td class="report_block_stat">0%</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div id="pie_div" class="report_section" style="margin-top:50px; text-align:center">
+
+    <div style="font-size:42px; padding-bottom:20px">
+      Meetings Breakdown
+    </div>
+
+    <div class="row">
+
+      <div id="pie1_div" class="col-sm-4"><h2>by Type</h2></div>
+      <div id="pie2_div" class="col-sm-4"><h2>by Market Cap</h2></div>
+      <div id="pie3_div" class="col-sm-4"><h2>by Region</h2></div>
+    </div>
+
+  </div>
+
+  
+
+
+</div>
+
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+// read in passed data
+// var DataFrame = dfjs.DataFrame;
+// var data = {{ data|safe }};
+// var colnames = {{ colnames|safe }};
+// var html_colnames = {{ html_colnames|safe }};
+
+var int_year = {{ int_year | safe }};
+var int_type = {{ int_type | safe }};
+var int_bucket = {{ int_bucket | safe }};
+var int_region = {{ int_region | safe }};
+
+var int_type_positions = {{ int_type_positions | safe }};
+var int_bucket_positions = {{ int_bucket_positions | safe }};
+var int_region_positions = {{ int_region_positions | safe }};
+
+
+
+
+    data = [{'year':2011, 'value':45}, {'year':2012, 'value':47},
+    {'year':2013, 'value':41},
+    {'year':2014, 'value':55},
+    {'year':2015, 'value':53}];
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 70},
+    width = 800 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// set the ranges
+var x = d3.scaleBand()
+          .range([0, width])
+          .padding(0.1);
+var y = d3.scaleLinear()
+          .range([height, 0]);
+          
+// append the svg object to the body of the page
+// append a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("#interactions_svg").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // format the data
+  int_year.forEach(function(d) {
+    d.value = +d.value;
+  });
+
+  // Scale the range of the data in the domains
+  x.domain(int_year.map(function(d) { return d.year; }));
+  y.domain([0, d3.max(int_year, function(d) { return d.value; })]);
+
+  // append the rectangles for the bar chart
+  svg.selectAll(".bar")
+      .data(int_year)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("fill", "#317fcd")
+      .attr("x", function(d) { return x(d.year); })
+      .attr("width", x.bandwidth())
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); });
+
+  // add the x Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // add the y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+
+
+function addDonut(data, div_name, positions) {
+
+  var width = 580 
+      height = 350 
+      margin = 150 
+
+  // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+  var radius = width / 2 - margin
+
+  // append the svg object to the div called 'my_dataviz'
+  var svg = d3.select(div_name)
+    .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+
+  // set the color scale
+  var colors = ['#184479', '#ea1500', '#c8cbcd', '#317fcd', '#51bbed', '#c7d2dd'];
+
+  // Compute the position of each group on the pie:
+  var pie = d3.pie()
+    .sort(null) // Do not sort group by size
+    .value(function(d) {return d.value; })
+  var data_ready = pie(d3.entries(data))
+
+  // The arc generator
+  var arc = d3.arc()
+    .innerRadius(radius * 0.6)         // This is the size of the donut hole
+    .outerRadius(radius * 0.8)
+
+  // Another arc that won't be drawn. Just for labels positioning
+  var outerArc = d3.arc()
+    .innerRadius(radius * 0.9)
+    .outerRadius(radius * 0.9)
+
+  // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+  svg
+    .selectAll('allSlices')
+    .data(data_ready)
+    .enter()
+    .append('path')
+    .attr('d', arc)
+    .attr('fill', function(d, i){ return(colors[i % 6]) })
+    .attr("stroke", "white")
+    .style("stroke-width", "2px")
+    .style("opacity", 0.7)
+
+  // Add the polylines between chart and labels:
+  svg
+    .selectAll('allPolylines')
+    .data(data_ready)
+    .enter()
+    .append('polyline')
+      .attr("stroke", "black")
+      .style("fill", "none")
+      .attr("stroke-width", 1)
+      .attr('points', function(d, i) {
+        var posA = positions[i][0]; // line insertion in the slice
+        var posB = positions[i][1]; // line break: we use the other arc generator that has been built only for that
+        var posC = positions[i][2]; // Label position = almost the same as posB
+        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
+        posC[0] = radius * 0.9 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+
+        return [posA, posB, posC]
+      })
+
+  // Add the polylines between chart and labels:
+  svg
+    .selectAll('allLabels')
+    .data(data_ready)
+    .enter()
+    .append('text')
+      .text( function(d) { return (d.data.key + ' ' + d.data.value + '%') } )
+      .attr('transform', function(d, i) {
+          var pos = positions[i][1];
+          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+          // midangle = midangle + 1
+          // console.log(midangle)
+
+          pos[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1);
+          // if (midangle > 3 & midangle < 6){
+          //   pos[1] = pos[1] + 10;
+          // }
+
+          // if (d.data.key == 'CEEMEA'){
+          //   pos[1] = pos[1] + 15;
+          // }
+
+          // if (d.data.key == 'AZ'){
+          //   pos[1] = pos[1] + 10;
+          // }
+          
+          return 'translate(' + pos + ')';
+      })
+      .style('text-anchor', function(d) {
+          var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
+          return (midangle < Math.PI ? 'start' : 'end')
+      })
+
+}
+
+
+
+var data = {a: 9, b: 20, c:30, d:8, Private:12, f:3, g:7, h:14};
+addDonut(int_type, '#pie1_div', int_type_positions);
+addDonut(int_bucket, '#pie2_div', int_bucket_positions);
+addDonut(int_region, '#pie3_div', int_region_positions);
+
+
+
+
+
+</script>
+
+
+
+
+{% endblock %}
