@@ -30,11 +30,13 @@ def upload_data(filename):
 
 	for c in expected_cols:
 		if c not in cols:
+			print(c)
 			missing_cols.append(c)
 	if len(missing_cols) > 0:
 		return "Error: The following columns were missing from your file: {}".format(', '.join(missing_cols))
 
 	df['Region Visited'] = df['Country Visited']
+	cols = list(df.columns)
 
 	query = "select * from corporates"
 
@@ -47,6 +49,9 @@ def upload_data(filename):
 								'Company Country', 'Company Industry'],
 					right_on = ['company_name', 'company_region',
 								'company_country', 'company_industry'])
+
+
+	print(df.columns)
 
 	new_corporates = df.loc[pd.isnull(df['corporate_id']), :]
 
@@ -126,7 +131,7 @@ def upload_data(filename):
 
 
 	# Write to investor summary table
-	grp = ['acct', 'investor_region', 'year', 'global_access']
+	grp = ['acct', 'account_name', 'investor_region', 'year', 'global_access']
 	roadshow_investor = interactions.groupby(grp).apply(lambda x: pd.Series({'total_interactions': x['company_name'].count(),
 																				'unique_corporates': x['company_name'].nunique(),
 																				'unique_industries': x['company_industry'].nunique(),
