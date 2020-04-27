@@ -25,6 +25,7 @@
 			<div class="output_div" style="padding:30px">
 				<center>
 					<h2>Results for: <span id="term">{{ searched }}</span></h2>
+					<br>
 				</center>
 
 				<div class="output_table_div">
@@ -35,6 +36,8 @@
 									<th span="col">{{ c }}</th>
 								{% endfor %}
 							</tr>
+						</thead>
+						<tbody>
 							{% for res in results %}
 							<tr>
 								<td><a href="/corporates/{{ res[0] }}">{{ res[1] }}</a><td>
@@ -43,8 +46,7 @@
 								<td>{{ res[4] }}<td>
 							</tr>
 							{% endfor %}
-							</tbody>
-						</thead>
+						</tbody>
 
 					</table>
 				</div>
