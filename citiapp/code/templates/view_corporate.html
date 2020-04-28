@@ -551,7 +551,11 @@ function writeInteractionsTable(df) {
 			if(output == null){
 				output = '-'
 			}
-			html_string += '<td>' + output + '</td>'
+			if (j==2){ // investor link
+	        	html_string += '<td><a href="/investors/'+output+'">' + output + '</a></td>'
+	      	} else {
+	        	html_string += '<td>' + output + '</td>'
+	      	}
 		}
 		html_string += "</tr>";
 	}

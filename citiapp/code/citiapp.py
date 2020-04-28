@@ -400,7 +400,7 @@ def search():
         if len(corporates)>0:
             c_columns = ['Name', 'Company Region', 'Company Country', 'Company Industry']
         if len(i_results)>0:
-            i_columns = ['Acct.', 'Account Name', 'Region(s)', 'Global Access Tier']
+            i_columns = ['Acct.', 'Account Name', 'Region', 'Global Access Tier']
 
         return render_template('search.html',
                                 searched = text,
