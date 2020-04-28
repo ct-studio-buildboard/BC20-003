@@ -456,6 +456,12 @@ function makePlot(data, title="Interactions by Global Access Tier") {
 }
 
 function addCommas(nStr){
+  console.log(nStr + 1);
+  var suffix = 'MM';
+  if (nStr >= 1000){
+    nStr = Math.round(nStr / 1000);
+    suffix = 'B';
+  }
   nStr += '';
   var x = nStr.split('.');
   var x1 = x[0];
@@ -464,15 +470,17 @@ function addCommas(nStr){
   while (rgx.test(x1)) {
     x1 = x1.replace(rgx, '$1' + ',' + '$2');
   }
-  return x1 + x2;
+  return x1 + x2 + suffix;
 }
 
 function writeDataBlocks(df) {
 
 	//Market cap (most recent)
 	var current_values = df.select('market_cap').toArray();
-	var market_cap = "$".concat(addCommas(current_values[current_values.length-1][0])).concat("MM");
-	if (market_cap != null) {
+	var market_cap = current_values[current_values.length-1][0];
+	console.log(Number.isNaN(market_cap));
+	if (!Number.isNaN(market_cap)) {
+		market_cap = "$".concat(addCommas(current_values[current_values.length-1][0]));
 		$("#db_market_cap").text(market_cap);
 	} else{
 		$("#db_market_cap").text('NA');

@@ -47,12 +47,12 @@
   </div>
 
   <div class="row year_button_row">
-		<button class="year_button year_selected" value="All">All Time</button>
+		<button class="year_button year_button_single year_selected" value="All">All Time</button>
 		{% for y in year_set %}
-			<button class="year_button" value="{{ y }}">{{ y }}</button>
+			<button class="year_button year_button_single" value="{{ y }}">{{ y }}</button>
 		{% endfor %}
 		<button class="year_button" id = "y" value="Custom" data-toggle="modal" data-target="#year_custom">Custom Range</button>
-    <button class="portfolio_button" value="Custum">By Portfolio Manager</button>
+    <button id="pm_button" class="portfolio_button" data-toggle="modal" data-target="#pm_modal">By Portfolio Manager</button>
     <button class="report_button" id = "button_report" value="Custum">Generate Report</button>
 	</div>
 
@@ -345,84 +345,159 @@
 
   </div>
 
-  <div id="generate_report_div" class="detail_div hidden">
-    <div class="report_select_div">
-      <div>
-      <div class = "text_heading2">Select items to be included in report:</div>
-        <div class = "row">
-          <div class = "col-md-1"></div>
-          <div class = "col-md-5 text_heading2">
-            <div>
-              <input type="checkbox" id="interactions_check" name="interactions_check">
-              <label for="interactions_check">Total Interactions</label>
-            </div>
-            <div>
-              <input type="checkbox" id="unique_companies_check" name="unique_companies_check">
-              <label for="unique_companies_check">Unique Companies</label>
-            </div>
-            <div>
-              <input type="checkbox" id="unique_industries_check" name="unique_industries_check">
-              <label for="unique_industries_check">Unique Industries</label>
-            </div>
-            <div>
-              <input type="checkbox" id="meeting_type_check" name="meeting_type_check">
-              <label for="meeting_type_check">Prevalent Meeting Type</label>
-            </div>
-            <div>
-              <input type="checkbox" id="management_check" name="management_check">
-              <label for="management_check">Management Presence</label>
-            </div>
-            <div>
-              <input type="checkbox" id="private_check" name="private_check">
-              <label for="private_check">Private Corporates</label>
-            </div>
-            <div>
-              <input type="checkbox" id="public_check" name="public_check">
-              <label for="public_check">Public Corporates</label>
-            </div>
-            <div>
-              <input type="checkbox" id="market_cap_check" name="market_cap_check">
-              <label for="market_cap_check">Average Market Cap</label>
-            </div>
-          </div>
-          <div class = "col-md-5 text_heading2">
-            <div>
-              <input type="checkbox" id="market_bucket_check" name="market_bucket_check">
-              <label for="market_bucket_check">Prevalent Market Bucket</label>
-            </div>
-            <div>
-              <input type="checkbox" id="cancelation_check" name="cancelation_check">
-              <label for="cancelation_check">Total Cancelations</label>
-            </div>
-            <div>
-              <input type="checkbox" id="us_check" name="us_check">
-              <label for="us_check">U.S. Based Corporates</label>
-            </div>
-            <div>
-              <input type="checkbox" id="video_conf_check" name="video_conf_check">
-              <label for="video_conf_check">Video Conference</label>
-            </div>
-            <div>
-              <input type="checkbox" id="fees_check" name="ytd_fees_check">
-              <label for="ytd_fees_check">Fees</label>
-            </div>
-          </div>
-        </div>
+  <div id="generate_report_div" class="detail_div hidden" style="width:90%; margin:auto">
+    <form method="post" action="/report-submit/">
+
+    <div class="row" style="padding-bottom:30px; border-bottom: 1px solid black">
+      <div class="col-md-2">
+        <label>Start Year</label>
+        <select id="report_start_year" name="report_start_year" class="form-control report_select">
+          <option>2017</option>
+        </select>
       </div>
-      <div class = "col-sm-12">
-        <div class = "row">
-          <div class = "col-md-6"></div>
-          <div class = "col-md-3">
-            <button class = "gen_report_button">Generate Report</button>
-          </div>
-        </div>
+      <div class="col-md-2">
+        <label>End Year</label>
+        <select id="report_end_year" name="report_end_year" class="form-control report_select">
+          <option>2017</option>
+        </select>
       </div>
+      <div class="col-md-2">
+        <label>Portfolio Manager</label>
+        <select id="report_pm" name="report_pm" class="form-control report_select">
+          <option>All</option>
+          {% for pm in pm_list %}
+            <option>{{ pm }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label>Analyst</label>
+        <select id="report_analyst" name="report_analyst" class="form-control report_select">
+          <option>All</option>
+          {% for analyst in analyst_list %}
+            <option>{{ analyst }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
     </div>
+
+
+    <div class="report_select_div" style="padding-top:30px">
+
+        <div class = "text_heading2">Select items to be included in report:</div>
+          <div class = "row">
+            <div class="col-md-4 text_heading2">
+              <h2 class="gen_report_heading">Charts</h2>
+              <div>
+                <input type="checkbox" id="interactions_check" name="interactions_check">
+                <label for="interactions_check">Interactions by Year</label>
+              </div>
+              <div>
+                <input type="checkbox" id="meeting_type_check" name="meeting_type_check">
+                <label for="meeting_type_check">Meeting Type Breakdown</label>
+              </div>
+              <div>
+                <input type="checkbox" id="region_check" name="region_check">
+                <label for="region_check">Corporate Region Breakdown</label>
+              </div>
+              <div>
+                <input type="checkbox" id="market_bucket_check" name="market_bucket_check">
+                <label for="market_bucket_check">Market Bucket Breakdown</label>
+              </div>
+            </div>
+              
+            <div class = "col-md-4 text_heading2">
+              <h2 class="gen_report_heading">Stats</h2>
+  <!--             <div>
+                <input type="checkbox" id="cancelation_check" name="cancelation_check">
+                <label for="cancelation_check">Total Cancelations</label>
+              </div> -->
+              <div>
+                <input type="checkbox" id="unique_corporates_check" name="unique_corporates_check">
+                <label for="unique_corporates_check">Unique Corporates</label>
+              </div>
+              <div>
+                <input type="checkbox" id="unique_industries_check" name="unique_industries_check">
+                <label for="unique_industries_check">Unique Industries</label>
+              </div>
+              <div>
+                <input type="checkbox" id="management_check" name="management_check">
+                <label for="management_check">Management Presence</label>
+              </div>
+              <div>
+                <input type="checkbox" id="public_check" name="public_check">
+                <label for="public_check">% Public / Private</label>
+              </div>
+              <div>
+                <input type="checkbox" id="market_cap_check" name="market_cap_check">
+                <label for="market_cap_check">Average Market Cap</label>
+              </div>
+              <div>
+                <input type="checkbox" id="video_conf_check" name="video_conf_check">
+                <label for="video_conf_check">% Video Conference</label>
+              </div>
+  <!--             <div>
+                <input type="checkbox" id="fees_check" name="ytd_fees_check">
+                <label for="ytd_fees_check">Fees</label>
+              </div> -->
+            </div>
+
+            <div class = "col-md-4 text_heading2">
+              <h2 class="gen_report_heading">Tables</h2>
+              <div>
+                <input type="checkbox" id="top_industries_check" name="top_industries_check">
+                <label for="top_industries_check">Top Industries</label>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="row">
+          <button class = "gen_report_button" type="submit">Generate Report</button>
+        </div>
+
+      
+      
+      </div>
+
+    </form>
 
   </div>
 
   <div id="graphic_div" class="detail_div hidden">
     <div id="graphic" style="width:80%; margin:auto"></div>
+  </div>
+
+  <div id="pm_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Portfolio Manager</h4>
+        </div>
+        <div class="modal-body">
+          <div class="widget_panel">
+            <!-- bookmark -->
+            <select id="pm_select" class="form-control">
+              <option selected>All</option>
+              {% for pm in pm_list %}
+                <option>{{ pm }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+
+    </div>
+
+
   </div>
 
   <div id="year_custom" class="modal fade" role="dialog">
@@ -443,7 +518,7 @@
               Min. Year
             </td>
             <td>
-              <input id="min_yr" class="custom-range widget" type="range" min="2017" max="2019" value="2017">
+              <input id="min_yr" class="custom-range year_range" type="range" min="2017" max="2019" value="2017">
             </td>
             <td class="td_slider_label">
               <span class="font-weight-bold slider_label">2017</span>
@@ -454,7 +529,7 @@
               Max. Year
             </td>
             <td>
-              <input id="max_yr" class="custom-range widget" type="range" min="2017" max="2019" value="2019">
+              <input id="max_yr" class="custom-range year_range" type="range" min="2017" max="2019" value="2019">
             </td>
             <td class="td_slider_label">
               <span class="font-weight-bold slider_label">2019</span>
@@ -484,12 +559,15 @@ var colnames = {{ colnames|safe }};
 var html_colnames = {{ html_colnames|safe }};
 
 var plot_data_global = [];
-var plot_title_global = "";
-var plot_variable_global = "";
+var plot_title_global = "Interactions by Meeting Type";
+var plot_variable_global = "meeting_type";
+
+var min_yr = 0;
+var max_yr = 3000;
+var pm = 'All';
 
 function makePlot(data, title="Interactions by Global Access Tier") {
 
-  console.log(data);
   plot_data_global = data;
   plot_title_global = title;
 
@@ -685,7 +763,6 @@ function filterInteractionsTable(df) {
 function filterCorporatesTable(df) {
 
   var grouped_df = df.groupBy('corporate_id', 'company_name', 'company_region', 'company_industry');
-  // console.log(grouped_df.show());
   var corporates = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
 
   var html_string = ""
@@ -740,6 +817,12 @@ function filterIndustriesTable(df) {
 }
 
 function addCommas(nStr){
+  console.log(nStr + 1);
+  var suffix = 'MM';
+  if (nStr >= 1000){
+    nStr = Math.round(nStr / 1000);
+    suffix = 'B';
+  }
   nStr += '';
   var x = nStr.split('.');
   var x1 = x[0];
@@ -748,14 +831,16 @@ function addCommas(nStr){
   while (rgx.test(x1)) {
     x1 = x1.replace(rgx, '$1' + ',' + '$2');
   }
-  return x1 + x2;
+  return x1 + x2 + suffix;
 }
+
+
 
 function writeDataBlocks(df) {
 
 	//Average Market cap
   var market_cap = Math.round(df.stat.mean('market_cap'))
-  $("#db_market_cap").text('$'.concat(addCommas(market_cap)).concat('MM'));
+  $("#db_market_cap").text('$'.concat(addCommas(market_cap)));
 
 	//Total Interactions
 	$("#db_total_interactions").text(df.count());
@@ -798,6 +883,19 @@ function writeDataBlocks(df) {
 
 }
 
+function filterPM(pm, df){
+  // var df = new DataFrame(data, colnames);
+  if (pm != 'All') {
+    df = df.filter(row => row.get("pm") == pm);
+  }
+
+  writeDataBlocks(df);
+  filterInteractionsTable(df);
+  filterCorporatesTable(df);
+  filterIndustriesTable(df);
+  return df;
+}
+
 function filterYear(year){
 
 	var df = new DataFrame(data, colnames);
@@ -824,9 +922,47 @@ function filterYear(year){
   return df;
 }
 
-$(document).ready(function(){
+function filterCustomYear() {
+  df = new DataFrame(data, colnames);
+  var min_yr = $("#min_yr").val();
+  df = df.filter(row => row.get("year") >= min_yr);
+  var max_yr = $("#max_yr").val();
+  df = df.filter(row => row.get("year") <= max_yr);
 
-	console.log(colnames);
+  writeDataBlocks(df);
+  filterInteractionsTable(df);
+  filterCorporatesTable(df);
+  filterIndustriesTable(df);
+
+
+  var grouped_df = df.groupBy(plot_variable_global);
+  var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+  makePlot(plot_data, plot_title_global);
+}
+
+function runFilters(){
+  
+  // var year = $(this).val();
+  df = new DataFrame(data, colnames);
+  df = df.filter(row => row.get("year") >= min_yr);
+  df = df.filter(row => row.get("year") <= max_yr);
+
+  if (pm != 'All'){
+    df = df.filter(row => row.get("pm") == pm);
+  }
+
+  writeDataBlocks(df);
+  filterInteractionsTable(df);
+  filterCorporatesTable(df);
+  filterIndustriesTable(df);
+
+
+  var grouped_df = df.groupBy(plot_variable_global);
+  var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
+  makePlot(plot_data, plot_title_global);
+}
+
+$(document).ready(function(){
 
 	var df = new DataFrame(data, colnames);
 
@@ -837,22 +973,18 @@ $(document).ready(function(){
 
   populateWidgets(df);
 
-	$(".year_button").click(function(){
+	$(".year_button_single").click(function(){
 		$(".year_button").removeClass('year_selected');
-		$(this).addClass('year_selected');
-		var year = $(this).val();
-		df = filterYear(year);
-
-    writeDataBlocks(df);
-    filterInteractionsTable(df);
-    filterCorporatesTable(df);
-    filterIndustriesTable(df);
-
-
-    var grouped_df = df.groupBy(plot_variable_global);
-    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
-    makePlot(plot_data, plot_title_global);
-
+    $(this).addClass('year_selected');
+    if ($(this).val() == 'All'){
+      min_yr = 0;
+      max_yr = 3000;
+    } else {
+      min_yr = $(this).val();
+      max_yr = $(this).val();
+    }
+    
+    runFilters();
 	});
 
   $(".custom-range").change(function() {
@@ -860,22 +992,27 @@ $(document).ready(function(){
     $(this).closest('tr').find('.slider_label').html(current_value);
   });
 
-  $(".widget").change(function() {
-    df = new DataFrame(data, colnames);
-    var min_yr = $("#min_yr").val();
-    df = df.filter(row => row.get("year") >= min_yr);
-    var max_yr = $("#max_yr").val();
-    df = df.filter(row => row.get("year") <= max_yr);
+  $(".year_range").change(function() {
+    min_yr = $("#min_yr").val();
+    max_yr = $("#max_yr").val();
+    runFilters();
+  });
 
-    writeDataBlocks(df);
-    filterInteractionsTable(df);
-    filterCorporatesTable(df);
-    filterIndustriesTable(df);
+  $("#year_custom").click(function() {
+    min_yr = $("#min_yr").val();
+    max_yr = $("#max_yr").val();
+    runFilters();
+  });
 
-
-    var grouped_df = df.groupBy(plot_variable_global);
-    var plot_data = grouped_df.aggregate(group => group.count()).sortBy('aggregation', reverse=true).toCollection();
-    makePlot(plot_data, plot_title_global);
+  $("#pm_select").change(function() {
+    pm = $(this).val();
+    runFilters();
+    if (this.value != 'All'){
+      $("#pm_button").text(this.value);
+    } else {
+      $("#pm_button").text("By Portfolio Manager");
+    }
+    
   });
 
   $("#y").click(function(){

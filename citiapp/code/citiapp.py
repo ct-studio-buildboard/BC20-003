@@ -30,6 +30,13 @@ def upload_file():
 
     return redirect('/')
 
+
+@app.route('/report-submit/', methods=['POST'])
+def submit_report():
+
+    print(request.form)
+    return 'hello'
+
 @app.route('/report-investor/', defaults={'acct': 9601})
 @app.route('/report-investor/<acct>')
 def report_investor(acct):
@@ -172,6 +179,9 @@ def investors(acct):
         investor_info['acct'] = acct
         investor_info['name'] = account_name
 
+        pm_list = sorted(list(set(df['pm'])))
+        analyst_list = sorted(list(set(df['analyst_name'])))
+
 
         html_colnames = {'acct':'Account ID', 'sgp':'SGP', 'investor_region':'Investor Region',
                         'equity_tier': 'Equity Tier', 'global_access': 'Global Access',
@@ -189,7 +199,9 @@ def investors(acct):
                                 investor_info = investor_info,
                                 data = json.dumps(df.values.tolist()),
                                 colnames = list(df.columns),
-                                html_colnames = html_colnames)
+                                html_colnames = html_colnames,
+                                pm_list=pm_list,
+                                analyst_list=analyst_list)
 
 
 @app.route('/investors/<acct>/similar_investors.html')

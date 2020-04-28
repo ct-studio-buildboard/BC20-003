@@ -268,7 +268,7 @@ text {
 }
 
 .gen_report_button {
-	width:100%;
+	/*width:100%;*/
 	padding-top:15px;
 	padding-bottom:15px;
 	border-radius:5px;
@@ -277,6 +277,14 @@ text {
 	font-size:24px;
 }
 
+.gen_report_heading {
+	color:black;
+	padding-bottom:15px;
+}
+
+.report_select {
+	max-width:300px;
+}
 
 .td_slider_label {
 	padding-left:95px;
