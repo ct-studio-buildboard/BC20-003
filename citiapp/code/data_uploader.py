@@ -145,7 +145,7 @@ def upload_data(filename):
 																			'us_pct': (x['company_region'] == 'US').mean(),
 																			'meeting_pct': (x['medium'] == 'Meeting').mean(),
 																			'conf_call_pct': (x['medium'] == 'Conference Call').mean(),
-																			'vid_call_pct': (x['medium'] == 'Video Call').mean(),
+																			'vid_call_pct': (x['medium'] == 'Video Conference').mean(),
 																			'webcast_pct': (x['webcast'] == 'Y').mean(),
 																			'open_ex_pct': (x['open_exchange_indicator'] == 'Y').mean()
 
@@ -165,7 +165,7 @@ def upload_data(filename):
 																			'platinum_pct': (x['global_access'] == 'Global Access Platinum').mean(),
 																			'meeting_pct': (x['medium'] == 'Meeting').mean(),
 																		'conf_call_pct': (x['medium'] == 'Conference Call').mean(),
-																		'vid_call_pct': (x['medium'] == 'Video Call').mean(),
+																		'vid_call_pct': (x['medium'] == 'Video Conference').mean(),
 																		'webcast_pct': (x['webcast'] == 'Y').mean(),
 																		'open_ex_pct': (x['open_exchange_indicator'] == 'Y').mean(),
 

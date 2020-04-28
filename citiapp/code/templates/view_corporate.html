@@ -506,7 +506,7 @@ function writeDataBlocks(df) {
 	$("#db_meeting_type").text(types[0]['meeting_type']);
 
 	//Video %
-	var webcast_count = df.filter(row => row.get('webcast') == 'Y').count()
+	var webcast_count = df.filter(row => row.get('medium') == 'Video Conference').count()
 	$("#db_video").text(String(Math.round(100 * webcast_count / df.count())) + '%')
 
 }

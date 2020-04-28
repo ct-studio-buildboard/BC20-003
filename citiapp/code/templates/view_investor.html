@@ -346,19 +346,25 @@
   </div>
 
   <div id="generate_report_div" class="detail_div hidden" style="width:90%; margin:auto">
-    <form method="post" action="/report-submit/">
+    <form method="post" action="/investor-report/">
+
+      <input name="acct" type="hidden" value="{{ investor_info['acct'] }}">
 
     <div class="row" style="padding-bottom:30px; border-bottom: 1px solid black">
       <div class="col-md-2">
         <label>Start Year</label>
         <select id="report_start_year" name="report_start_year" class="form-control report_select">
-          <option>2017</option>
+          {% for y in year_set %}
+            <option>{{ y }}
+          {% endfor %}
         </select>
       </div>
       <div class="col-md-2">
         <label>End Year</label>
         <select id="report_end_year" name="report_end_year" class="form-control report_select">
-          <option>2017</option>
+          {% for y in year_set %}
+            <option>{{ y }}
+          {% endfor %}
         </select>
       </div>
       <div class="col-md-2">
@@ -390,19 +396,19 @@
             <div class="col-md-4 text_heading2">
               <h2 class="gen_report_heading">Charts</h2>
               <div>
-                <input type="checkbox" id="interactions_check" name="interactions_check">
+                <input type="checkbox" id="interactions_check" name="interactions_check" checked>
                 <label for="interactions_check">Interactions by Year</label>
               </div>
               <div>
-                <input type="checkbox" id="meeting_type_check" name="meeting_type_check">
+                <input type="checkbox" id="meeting_type_check" name="meeting_type_check" checked>
                 <label for="meeting_type_check">Meeting Type Breakdown</label>
               </div>
               <div>
-                <input type="checkbox" id="region_check" name="region_check">
+                <input type="checkbox" id="region_check" name="region_check" checked>
                 <label for="region_check">Corporate Region Breakdown</label>
               </div>
               <div>
-                <input type="checkbox" id="market_bucket_check" name="market_bucket_check">
+                <input type="checkbox" id="market_bucket_check" name="market_bucket_check" checked>
                 <label for="market_bucket_check">Market Bucket Breakdown</label>
               </div>
             </div>
@@ -414,27 +420,27 @@
                 <label for="cancelation_check">Total Cancelations</label>
               </div> -->
               <div>
-                <input type="checkbox" id="unique_corporates_check" name="unique_corporates_check">
+                <input type="checkbox" id="unique_corporates_check" name="unique_corporates_check" checked>
                 <label for="unique_corporates_check">Unique Corporates</label>
               </div>
               <div>
-                <input type="checkbox" id="unique_industries_check" name="unique_industries_check">
+                <input type="checkbox" id="unique_industries_check" name="unique_industries_check" checked>
                 <label for="unique_industries_check">Unique Industries</label>
               </div>
               <div>
-                <input type="checkbox" id="management_check" name="management_check">
+                <input type="checkbox" id="management_check" name="management_check" checked>
                 <label for="management_check">Management Presence</label>
               </div>
               <div>
-                <input type="checkbox" id="public_check" name="public_check">
+                <input type="checkbox" id="public_check" name="public_check" checked>
                 <label for="public_check">% Public / Private</label>
               </div>
               <div>
-                <input type="checkbox" id="market_cap_check" name="market_cap_check">
+                <input type="checkbox" id="market_cap_check" name="market_cap_check" checked>
                 <label for="market_cap_check">Average Market Cap</label>
               </div>
               <div>
-                <input type="checkbox" id="video_conf_check" name="video_conf_check">
+                <input type="checkbox" id="video_conf_check" name="video_conf_check" checked>
                 <label for="video_conf_check">% Video Conference</label>
               </div>
   <!--             <div>
@@ -446,7 +452,7 @@
             <div class = "col-md-4 text_heading2">
               <h2 class="gen_report_heading">Tables</h2>
               <div>
-                <input type="checkbox" id="top_industries_check" name="top_industries_check">
+                <input type="checkbox" id="top_industries_check" name="top_industries_check" checked>
                 <label for="top_industries_check">Top Industries</label>
               </div>
             </div>
@@ -1021,9 +1027,11 @@ $(document).ready(function(){
 	});
 
   $("#button_report").click(function(){
+    $(".detail_div").hide();
     $("#generate_report_div").removeClass('hidden');
     $("#generate_report_div").show();
 
+    // $(".detail_div").hide();
     $("#overview_div").hide();
     $("#overview_button_div").removeClass('hidden');
     $("#overview_button_div").show();

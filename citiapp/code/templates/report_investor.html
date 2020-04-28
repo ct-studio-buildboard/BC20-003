@@ -9,6 +9,8 @@
     transform: scale(.4);
     -webkit-print-color-adjust: exact !important;
   }*/
+
+
   
 
   .report_block_1 {
@@ -65,56 +67,35 @@
 
 
 {% block innercontent %}
-<div class="report_container">
+<div class="report_container" style="zoom:60%">
 
   <div class="report_section">
 
     <div class="report_block_1">
       
-      <p style="color:white; font-size:36px">Fidelity Investments - Data Report</p>
-      <p style="font-size:28px">Generated on: 4/24/2020</p>
+      <p style="color:white; font-size:36px">{{ account_name }} - Data Report</p>
+      <p style="font-size:28px">Generated on: {{ current_date }}</p>
 
     </div>
 
-    <div class="row" style="padding-top:40px; padding-bottom:40px; width:80%; margin:auto">
+    <div class="row" style="padding-top:40px; padding-bottom:40px; width:90%; margin:auto">
       <div class="col-sm-7" style="padding-left:80px">
         <h2>Interactions by Year</h2>
-        <svg id="interactions_svg" width="800" height="400"></svg>
+        <svg id="interactions_svg" width="800" height="600"></svg>
       </div>
 
-      <div class="col-sm-5" style="padding-top:60px">
-        <div class="report_block_2" style="color:white">
-          <table style="width:100%">
-            <tr>
-              <td>Unique Corporates</td>
-              <td class="report_block_stat">{{ stats['unique_corporates'] }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="report_block_2" style="color:white">
-          <table style="width:100%">
-            <tr>
-              <td>Unique Industries</td>
-              <td class="report_block_stat">{{ stats['unique_industries'] }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="report_block_2" style="color:white">
-          <table style="width:100%">
-            <tr>
-              <td>Mgmt Presence</td>
-              <td class="report_block_stat">{{ stats['mgmt'] }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="report_block_2" style="color:white">
-          <table style="width:100%">
-            <tr>
-              <td>Cancelation Rate</td>
-              <td class="report_block_stat">0%</td>
-            </tr>
-          </table>
-        </div>
+      <div id="stats_div" class="col-sm-5" style="padding-top:60px">
+
+        {% for stat in stat_tuples %}
+          <div class="report_block_2" style="color:white">
+            <table style="width:100%">
+              <tr>
+                <td>{{ stat[0] }}</td>
+                <td class="report_block_stat">{{ stat[1] }}</td>
+              </tr>
+            </table>
+          </div>
+        {% endfor %}
 
       </div>
     </div>
@@ -162,17 +143,11 @@ var int_type_positions = {{ int_type_positions | safe }};
 var int_bucket_positions = {{ int_bucket_positions | safe }};
 var int_region_positions = {{ int_region_positions | safe }};
 
+//Interactions Plot
 
-
-
-    data = [{'year':2011, 'value':45}, {'year':2012, 'value':47},
-    {'year':2013, 'value':41},
-    {'year':2014, 'value':55},
-    {'year':2015, 'value':53}];
-
-    var margin = {top: 20, right: 20, bottom: 30, left: 70},
-    width = 800 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+var margin = {top: 20, right: 20, bottom: 30, left: 70},
+width = $("#interactions_svg").attr('width') - margin.left - margin.right,
+height = $("#interactions_svg").attr('height') - margin.top - margin.bottom;
 
 // set the ranges
 var x = d3.scaleBand()

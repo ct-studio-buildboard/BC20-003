@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block innercontent %}
+<div class="report_container" style="width:60%; margin:auto; text-align:center">
+
+  <h1 style="color:red">Error</h1>
+  <p>The configuration you chose yielded 0 results.</p>
+
+  <form action = "/investors/{{ acct }}">
+     <button class="detail_button_3">Back</button>
+  </form>
+
+</div>
+ {% endblock %}
+
+
