@@ -218,25 +218,52 @@ def similar_investors(acct):
 @app.route('/search')
 def search():
     search_term = request.args.get('search')
+    c_columns = []
+    i_columns = []
+    text = "No results found."
+
     if search_term.strip()=='' or search_term == None:
         return render_template('search.html',
-                                searched = 'no search text entered',
-                                results = [],
-                                columns = [])
+                                searched = text,
+                                results = 0,
+                                c_results = [],
+                                i_results = [],
+                                c_columns = c_columns,
+                                i_columns = i_columns)
 
     else:
         conn = sqlite3.connect("citi.db")
         query = """SELECT * FROM corporates
-                    WHERE company_name LIKE '%"""+search_term+"%'"
-        results = pd.read_sql_query(query, conn)
+                    WHERE company_name LIKE '%"""+search_term+"""%'
+                    ORDER BY company_name limit 100"""
+        corporates = pd.read_sql_query(query, conn)
+        
+        query = """SELECT distinct acct, account_name, investor_region, global_access FROM roadshow_investor
+                    WHERE account_name LIKE '%"""+search_term+"""%'
+                    ORDER BY account_name limit 100"""
+        investors = pd.read_sql_query(query, conn)
         conn.close()
 
-        columns = ['Name', 'Company Region', 'Company Country', 'Company Industry']
+        grp = ['acct','account_name']
+        # i_results = investors.groupby(grp, as_index=False)['investor_region'].apply(', '.join).reset_index()
+        aggregation_functions = {'global_access': 'first', 'investor_region': 'last'}
+        i_results = investors.groupby(grp, as_index=False).aggregate(aggregation_functions).reindex(columns=investors.columns)
+
+        if len(corporates)+len(i_results)>0:
+            text = "Results for: \""+search_term+"\""
+
+        if len(corporates)>0:
+            c_columns = ['Name', 'Company Region', 'Company Country', 'Company Industry']
+        if len(i_results)>0:
+            i_columns = ['Acct.', 'Account Name', 'Region(s)', 'Global Access Tier']
 
         return render_template('search.html',
-                                searched = search_term,
-                                results = results.values.tolist(),
-                                columns = columns)
+                                searched = text,
+                                results = len(corporates)+len(i_results),
+                                c_results = corporates.values.tolist(),
+                                i_results = i_results.values.tolist(),
+                                c_columns = c_columns,
+                                i_columns = i_columns)
 
 @app.route('/corporates/', defaults={'corporate_id': None})
 @app.route('/corporates/<corporate_id>')
