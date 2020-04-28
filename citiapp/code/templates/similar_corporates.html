@@ -8,16 +8,16 @@
     <div class="row row_heading">
   		<div class="col-sm-2">
   			<div class="div_heading_1">
-  				Investor
+  				Corporate
   			</div>
   		</div>
   		<div class="col-sm-8">
   			<div class="text_heading">
-  				Investor Name Obfuscated
+  				{{ corporate_info['company_name'] }}
   			</div>
   		</div>
       <div class="col-sm-1">
-        <form action="/investors/{{investor_info['acct']}}">
+        <form action="/corporates/{{corporate_info['corporate_id']}}">
   			  <button class="detail_button_3">Back</button>
         </form>
   		</div>
@@ -30,7 +30,7 @@
   		</div>
   		<div class="col-sm-6">
   			<div class="text_heading">
-  				{{ investor_info['acct'] }}
+  				{{ corporate_info['corporate_id'] }}
   			</div>
   		</div>
   	</div>
@@ -38,7 +38,7 @@
 
   <div class="col-md-12">
     <div class="div_heading_1">
-      Similar Investors
+      Similar Corporates
     </div>
     <div></div>
     <center>*similarities are based on interaction statistics and not characteristics such as region or location</center>
@@ -47,23 +47,23 @@
     <div style="padding-top:40px">
     <center>
       <div class="col-md-3">
-        <form action=/investors/{{investor_info['neighbors'][0]}}>
+        <form action=/corporates/{{corporate_info['neighbors'][0]}}>
           <button class="data_block_1">
-            <div class="data_block_heading">{{investor_info['neighbors'][0]}}</div>
+            <div class="data_block_heading">{{corporate_info['neighbors'][0]}}: {{corporate_info['neighbor_names'][0]}}</div>
           </button>
         </form>
       </div>
       <div class="col-md-3">
-        <form action=/investors/{{investor_info['neighbors'][1]}}>
+        <form action=/corporates/{{corporate_info['neighbors'][1]}}>
           <button class="data_block_1">
-            <div class="data_block_heading">{{investor_info['neighbors'][1]}}</div>
+            <div class="data_block_heading">{{corporate_info['neighbors'][1]}}: {{corporate_info['neighbor_names'][1]}}</div>
           </button>
         </form>
       </div>
       <div class="col-md-3">
-        <form action=/investors/{{investor_info['neighbors'][2]}}>
+        <form action=/corporates/{{corporate_info['neighbors'][2]}}>
           <button class="data_block_1">
-            <div class="data_block_heading">{{investor_info['neighbors'][2]}}</div>
+            <div class="data_block_heading">{{corporate_info['neighbors'][2]}}: {{corporate_info['neighbor_names'][2]}}</div>
           </button>
         </form>
       </div>

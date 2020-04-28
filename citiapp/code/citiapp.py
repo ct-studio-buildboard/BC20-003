@@ -96,7 +96,7 @@ def report_investor(acct):
         int_region[r['company_region']] = round(100 * r['ct'] / df.shape[0], 1)
 
 
-    return render_template('report_investor.html', 
+    return render_template('report_investor.html',
                             stats=stats,
                             int_year=int_year,
                             int_type=int_type,
@@ -196,7 +196,7 @@ def similar_investors(acct):
 
     correlation_columns = ['total_interactions', 'unique_corporates', 'unique_industries', 'one_on_one_pct',
                   'group_pct', 'management_pct', 'market_cap_mean', 'market_cap_median', 'large_pct',
-                  'private_pct', 'us_pct']
+                  'private_pct', 'us_pct', 'meeting_pct', 'conf_call_pct', 'vid_call_pct', 'open_ex_pct']
     knn_investor = NearestNeighbors(n_neighbors=3).fit(investors.loc[:, correlation_columns])
     neighbors = knn_investor.kneighbors(return_distance=False)
 
@@ -214,6 +214,7 @@ def similar_investors(acct):
                             investor_info = investor_info,
                             data = json.dumps(investors.values.tolist()),
                             colnames = list(investors.columns))
+
 
 @app.route('/search')
 def search():
@@ -237,7 +238,7 @@ def search():
                     WHERE company_name LIKE '%"""+search_term+"""%'
                     ORDER BY company_name limit 100"""
         corporates = pd.read_sql_query(query, conn)
-        
+
         query = """SELECT distinct acct, account_name, investor_region, global_access FROM roadshow_investor
                     WHERE account_name LIKE '%"""+search_term+"""%'
                     ORDER BY account_name limit 100"""
@@ -355,6 +356,51 @@ def corporates(corporate_id):
                                 colnames = list(df.columns),
                                 html_colnames = json.dumps(html_colnames),
                                 df_investors = df_investors)
+
+@app.route('/corporates/<corporate_id>/similar_corporates.html')
+def similar_corporates(corporate_id):
+    conn = sqlite3.connect("citi.db")
+    query = """SELECT * from roadshow_company"""
+    corporates = pd.read_sql_query(query, conn)
+    conn.close()
+
+    corporates.fillna(0, inplace=True)
+
+    correlation_columns = ['corporate_id', 'company_name', 'total_interactions', 'unique_investors', 'one_on_one_pct',
+                  'group_pct', 'management_pct', 'market_cap_avg', 'platinum_pct',
+                  'meeting_pct', 'conf_call_pct', 'vid_call_pct', 'open_ex_pct']
+    corporates_correlation = corporates.loc[:, correlation_columns]
+    corporates_correlation_grouped = corporates_correlation.groupby(['company_name']).apply(lambda x: pd.Series({'total_interactions': x['total_interactions'].sum(),
+                                                                'unique_investors': x['unique_investors'].mean(),
+                                                                'one_on_one_pct': x['one_on_one_pct'].mean(),
+                                                               'group_pct': x['group_pct'].mean(),
+                                                               'management_pct': x['management_pct'].mean(),
+                                                               'market_cap_avg': x['market_cap_avg'].mean(),
+                                                               'platinum_pct': x['platinum_pct'].mean(),
+                                                              'meeting_pct': x['meeting_pct'].mean(),
+                                                              'conf_call_pct': x['conf_call_pct'].mean(),
+                                                              'vid_call_pct': x['vid_call_pct'].mean(),
+                                                             'open_ex_pct': x['open_ex_pct'].mean(),
+                                                             'corporate_id': x['corporate_id'][0]
+                                                                })).reset_index()
+
+    correlation_columns = ['total_interactions', 'unique_investors', 'one_on_one_pct',
+                  'group_pct', 'management_pct', 'market_cap_avg', 'platinum_pct',
+                  'meeting_pct', 'conf_call_pct', 'vid_call_pct', 'open_ex_pct']
+    knn_corporate = NearestNeighbors(n_neighbors=3).fit(corporates_correlation_grouped.loc[:, correlation_columns])
+    neighbors = knn_corporate.kneighbors(return_distance=False)
+
+    acct_index = corporates_correlation_grouped.index[corporates_correlation_grouped['corporate_id'] == float(corporate_id)]
+    acct_neighbors = [int(corporates_correlation_grouped.iloc[n]['corporate_id']) for n in neighbors[acct_index][0]]
+    acct_neighbors_names = [corporates_correlation_grouped.iloc[n]['company_name'] for n in neighbors[acct_index][0]]
+
+    corporate_info = {}
+    corporate_info['company_name'] = corporates_correlation_grouped.iloc[acct_index]['company_name'].to_string().split(' ', 1)[1]
+    corporate_info['corporate_id'] = corporate_id
+    corporate_info['neighbors'] = acct_neighbors
+    corporate_info['neighbor_names'] = acct_neighbors_names
+
+    return render_template('similar_corporates.html', corporate_info = corporate_info)
 
 
 
