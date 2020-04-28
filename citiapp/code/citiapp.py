@@ -154,6 +154,12 @@ def investors(acct):
                     where acct == {}
                     order by 'date' """.format(acct)
         df = pd.read_sql_query(query, conn)
+
+        cur = conn.cursor()
+        query = """SELECT DISTINCT account_name FROM
+                roadshow_investor WHERE acct == {}""".format(acct)
+        cur.execute(query)
+        account_name = cur.fetchall()[0][0]
         conn.close()
 
         df['management_presence'] = np.where(df['management_flag'] == 1, 'Yes', 'No')
@@ -164,6 +170,7 @@ def investors(acct):
 
         investor_info = {}
         investor_info['acct'] = acct
+        investor_info['name'] = account_name
 
 
         html_colnames = {'acct':'Account ID', 'sgp':'SGP', 'investor_region':'Investor Region',
