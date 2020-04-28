@@ -41,7 +41,6 @@
   			</div>
   		</div>
       <div class="col-sm-3">
-  			<button class="detail_button_2">Match Corporates</button>
   		</div>
   	</div>
   </div>
@@ -412,7 +411,7 @@
                 <label for="market_bucket_check">Market Bucket Breakdown</label>
               </div>
             </div>
-              
+
             <div class = "col-md-4 text_heading2">
               <h2 class="gen_report_heading">Stats</h2>
   <!--             <div>
@@ -465,8 +464,8 @@
           <button class = "gen_report_button" type="submit">Generate Report</button>
         </div>
 
-      
-      
+
+
       </div>
 
     </form>
@@ -947,7 +946,7 @@ function filterCustomYear() {
 }
 
 function runFilters(){
-  
+
   // var year = $(this).val();
   df = new DataFrame(data, colnames);
   df = df.filter(row => row.get("year") >= min_yr);
@@ -989,7 +988,7 @@ $(document).ready(function(){
       min_yr = $(this).val();
       max_yr = $(this).val();
     }
-    
+
     runFilters();
 	});
 
@@ -1018,7 +1017,7 @@ $(document).ready(function(){
     } else {
       $("#pm_button").text("By Portfolio Manager");
     }
-    
+
   });
 
   $("#y").click(function(){
