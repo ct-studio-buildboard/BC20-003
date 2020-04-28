@@ -10,9 +10,6 @@
     -webkit-print-color-adjust: exact !important;
   }*/
 
-
-  
-
   .report_block_1 {
     background: #0B4479;
     border-radius: 10px;
@@ -117,6 +114,34 @@
     </div>
 
   </div>
+
+  {% if industries_data|length > 0 %}
+
+    <div id="industries_div" class="report_section" style="margin-top:50px; text-align:center; width:70%; margin-left:auto; margin-right:auto">
+
+      <h1>Top Industries</h1>
+
+      <table class="table table-striped" style="font-size:32px; margin-top:50px">
+        <thead>
+          <tr>
+            <td>Industry</td>
+            <td style="text-align:center">Total Interactions</td>
+            <td style="text-align:center">Unique Corporates</td>
+          </tr>
+        </thead>
+        {% for ind in industries_data %}
+          <tr>
+            <td>{{ ind[0] }}</td>
+            <td style="text-align:center">{{ ind[1] }}</td>
+            <td style="text-align:center">{{ ind[2] }}</td>
+          </tr>
+        {% endfor %}
+
+      </table>
+    </div>
+
+
+  {% endif %}
 
   
 

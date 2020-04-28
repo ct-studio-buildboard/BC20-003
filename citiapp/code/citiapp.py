@@ -88,6 +88,13 @@ def investor_report():
     if 'video_conf_check' in request.form:
         stat_tuples.append(('% Video Call', str(round(100*(df.medium=='Video Conference').mean())) + '%'))
 
+    industries_data = []
+    #bookmark
+    if 'top_industries_check' in request.form:
+        temp_df = df.groupby('company_industry').apply(lambda x: pd.Series({'total_interactions':x['corporate_id'].count(),
+                                                                            'unique_corporates':x['corporate_id'].nunique()}))
+        industries_data = temp_df.sort_values('total_interactions', ascending=False).reset_index().values
+
 
     account_name = list(df.account_name)[0]
 
@@ -149,7 +156,8 @@ def investor_report():
                             int_region=int_region,
                             int_region_positions=int_region_positions,
                             current_date=str(date.today()),
-                            stat_tuples=stat_tuples)
+                            stat_tuples=stat_tuples,
+                            industries_data=industries_data)
 
     print(request.form)
     return 'hello'
